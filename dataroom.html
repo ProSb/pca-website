@@ -1,237 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive SPA: Virtual Data Room Explorer</title>
-    
-    <!-- Placeholder Comments -->
-    <!-- Chosen Palette: Corporate Blue & Light Gray -->
-    <!-- Application Structure Plan: A file explorer UI metaphor. This is the most intuitive way to represent a hierarchical folder structure. A persistent left-hand navigation allows quick jumps between top-level categories, while the main panel displays the contents. A search bar adds utility. This is superior to a static list as it's interactive, familiar to users, and allows for focused exploration of specific sections. -->
-    <!-- Visualization & Content Choices: 
-        - VDR Structure: Goal(Organize) -> Interactive file browser interface (HTML/CSS) -> Interaction(Click to navigate folders, search to filter files) -> Justification(Directly mirrors the source material's intent in an intuitive, interactive format).
-        - Icons: Goal(Inform) -> Unicode characters (📁, 📄, 📊) -> Justification(Lightweight, universally understood symbols for folders and file types).
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <title>Data Room - Premium Crypto Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #241532;
+            --bg-card: #2c1b34;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8c52ff;
+            --accent-pink: #ff5170;
+            --accent-cyan: #5de0e6;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* gray-100 */
+            background-color: var(--bg-dark);
+            color: var(--text-light);
         }
-        .file-explorer {
-            height: 80vh;
-            max-height: 700px;
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
         }
-        .sidebar-item.active {
-            background-color: #e0e7ff; /* indigo-100 */
-            color: #3730a3; /* indigo-800 */
-            font-weight: 600;
+        .nav-link {
+            transition: color 0.2s;
+            position: relative;
         }
-        .file-item:hover {
-            background-color: #eff6ff; /* blue-50 */
+        .nav-link:hover {
+            color: var(--accent-cyan);
         }
-        .notification {
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            transform: translateY(100%);
-            opacity: 0;
+        .nav-link.active-page {
+             color: var(--accent-cyan);
+             font-weight: 600;
         }
-        .notification.show {
-            transform: translateY(0);
-            opacity: 1;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-cyan);
+            transition: width 0.3s ease;
         }
+         .nav-link.active-page::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        /* Unique styles for this page */
+        .file-explorer { height: 80vh; max-height: 700px; }
+        .sidebar-item.active { background-color: var(--accent-purple); color: white; font-weight: 600; }
+        .file-item:hover { background-color: var(--bg-card); }
+        .notification { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; transform: translateY(100%); opacity: 0; }
+        .notification.show { transform: translateY(0); opacity: 1; }
     </style>
 </head>
-<body class="antialiased text-gray-800">
+<body class="antialiased">
 
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <header class="mb-6">
-            <h1 class="text-4xl font-extrabold text-gray-900">Virtual Data Room</h1>
-            <p class="mt-2 text-lg text-gray-600">An organized and secure space for investor due diligence. Navigate through the folders to review our company materials.</p>
-        </header>
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/pca-website/" class="flex items-center space-x-2">
+                <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
+            </div>
+            <a href="/pca-website/#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
+        </nav>
+    </header>
 
-        <div class="file-explorer w-full bg-white rounded-xl shadow-lg border border-gray-200 flex overflow-hidden">
-            <!-- Sidebar -->
-            <aside id="sidebar" class="w-1/3 md:w-1/4 lg:w-1/5 bg-gray-50 border-r border-gray-200 p-4 space-y-2 overflow-y-auto">
-                <!-- Sidebar items will be injected by JS -->
-            </aside>
-
-            <!-- Main Content -->
-            <main class="w-2/3 md:w-3/4 lg:w-4/5 flex flex-col">
-                <div class="p-4 border-b border-gray-200">
-                    <input type="text" id="searchInput" placeholder="Search in current folder..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
-                <div id="content-pane" class="p-6 flex-grow overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    <!-- File and folder items will be injected by JS -->
-                </div>
-            </main>
+    <main>
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <header class="mb-6">
+                <h1 class="font-heading text-4xl font-extrabold text-white">Virtual Data Room</h1>
+                <p class="mt-2 text-lg text-text-muted">An organized and secure space for investor due diligence. Navigate through the folders to review our company materials.</p>
+            </header>
+    
+            <div class="file-explorer w-full bg-bg-card rounded-xl shadow-lg border border-white/10 flex overflow-hidden">
+                <aside id="sidebar" class="w-1/3 md:w-1/4 lg:w-1/5 bg-dark/50 border-r border-white/10 p-4 space-y-2 overflow-y-auto">
+                </aside>
+    
+                <main class="w-2/3 md:w-3/4 lg:w-4/5 flex flex-col">
+                    <div class="p-4 border-b border-white/10">
+                        <input type="text" id="searchInput" placeholder="Search in current folder..." class="w-full px-3 py-2 bg-dark border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-purple">
+                    </div>
+                    <div id="content-pane" class="p-6 flex-grow overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    </div>
+                </main>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Notification -->
-    <div id="notification" class="notification fixed bottom-5 right-5 bg-gray-800 text-white py-2 px-5 rounded-lg shadow-xl">
+    <footer class="bg-black/50 py-16 border-t border-white/10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+             <div class="flex flex-col items-center">
+                 <p class="text-sm text-text-muted/70">Powered by</p>
+                <img src="https://i.imgur.com/8J5jJ3N.png" alt="SB Industries Logo" class="h-10 mt-2">
+                <p class="text-xs text-text-muted/50 mt-4">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div id="notification" class="notification fixed bottom-5 right-5 bg-accent-purple text-white py-2 px-5 rounded-lg shadow-xl">
         <p id="notification-text"></p>
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('header nav a');
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+                if (linkPath === currentPage) {
+                    link.classList.add('active-page');
+                }
+            });
+        });
+    </script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-
         const vdrData = {
-            '01-corporate-legal': {
-                name: '01. Corporate & Legal',
-                icon: '📁',
-                content: {
-                    'PCA-STRT-LR-YYYYMMDD.pdf': { name: 'Legal Readiness Checklist.pdf', type: 'file', icon: '📄' },
-                    'incorporation-docs': { name: '1.1. Incorporation Documents', type: 'folder', icon: '📁', content: {
-                        'Certificate_of_Incorporation.pdf': { name: 'Certificate_of_Incorporation.pdf', type: 'file', icon: '📄' },
-                        'Company_Statutes_or_Bylaws.pdf': { name: 'Company_Statutes_or_Bylaws.pdf', type: 'file', icon: '📄' },
-                    }},
-                    'Cap_Table_YYYYMMDD.xlsx': { name: '1.2. Cap Table.xlsx', type: 'file', icon: '📊' },
-                    'Executed_Founders_Agreement.pdf': { name: '1.3. Founder Agreements.pdf', type: 'file', icon: '📄' },
-                }
-            },
-            '02-financials': {
-                name: '02. Financials',
-                icon: '📁',
-                content: {
-                    'PCA-STRT-FM-YYYYMMDD.pdf': { name: 'Financial Model Outline.pdf', type: 'file', icon: '📄' },
-                    'PCA_Financial_Model_3-Year_Projections.xlsx': { name: 'Financial Model.xlsx', type: 'file', icon: '📊' },
-                    'Historical_Financials': { name: '2.2. Historical Financials', type: 'folder', icon: '📁', content: {
-                         'P&L_Statement_YYYYMMDD.pdf': { name: 'P&L_Statement.pdf', type: 'file', icon: '📄' },
-                         'Balance_Sheet_YYYYMMDD.pdf': { name: 'Balance_Sheet.pdf', type: 'file', icon: '📄' },
-                    }}
-                }
-            },
-            '03-market-strategy': {
-                name: '03. Market & Strategy',
-                icon: '📁',
-                content: {
-                    'PCA-STRT-BP-20250610.pdf': { name: 'Business Plan.pdf', type: 'file', icon: '📄' },
-                    'PCA-MKTG-INFO-Retail_Crypto_Market_Report.pdf': { name: 'Market Research Report.pdf', type: 'file', icon: '📄' },
-                    'Competitive_Analysis.pdf': { name: 'Competitive Analysis.pdf', type: 'file', icon: '📄' }
-                }
-            },
-            '04-product-tech': {
-                name: '04. Product & Technology',
-                icon: '📁',
-                content: {
-                    'PCA_Subscription_Tiers_Features.pdf': { name: 'Product Overview.pdf', type: 'file', icon: '📄' },
-                    'Sample_Reports': { name: '4.2. Sample Reports', type: 'folder', icon: '📁', content: {
-                        'Sample_Light_Tier_Weekly_Report.pdf': { name: 'Sample_Light_Report.pdf', type: 'file', icon: '📄' },
-                        'Sample_Premium_Tier_Midweek_Update.pdf': { name: 'Sample_Premium_Report.pdf', type: 'file', icon: '📄' },
-                    }},
-                    'PCA_Technology_Overview.pdf': { name: 'Tech Stack Overview.pdf', type: 'file', icon: '📄' }
-                }
-            },
-            '05-traction-performance': {
-                name: '05. Traction & Performance',
-                icon: '📁',
-                content: {
-                    'PCA_Performance_Dashboard_Public.pdf': { name: 'Performance Dashboard.pdf', type: 'file', icon: '📄' },
-                    'Case_Studies': { name: '5.2. Case Studies', type: 'folder', icon: '📁', content: {
-                        'Case_Study_STBU_Token.pdf': { name: 'Case_Study_STBU.pdf', type: 'file', icon: '📄' },
-                        'Case_Study_TRADE_Token.pdf': { name: 'Case_Study_TRADE.pdf', type: 'file', icon: '📄' }
-                    }},
-                    'User_Testimonials.pdf': { name: 'User Testimonials.pdf', type: 'file', icon: '📄' },
-                }
-            },
-            '06-team': {
-                name: '06. Team',
-                icon: '📁',
-                content: {
-                    'Founder_Bio_Sebastian.pdf': { name: 'Founder Bio.pdf', type: 'file', icon: '📄' },
-                    'Team_Overview.pdf': { name: 'Team Overview.pdf', type: 'file', icon: '📄' },
-                }
-            },
-            '07-fundraising': {
-                name: '07. Fundraising',
-                icon: '📁',
-                content: {
-                    'PCA-FNRS-PD-20250610.pdf': { name: 'Pitch Deck.pdf', type: 'file', icon: '📄' },
-                }
-            }
+            '01-corporate-legal': { name: '01. Corporate & Legal', icon: '📁', content: { 'PCA-STRT-LR-YYYYMMDD.pdf': { name: 'Legal Readiness Checklist.pdf', type: 'file', icon: '📄' }, 'incorporation-docs': { name: '1.1. Incorporation Docs', type: 'folder', icon: '📁'}, 'Cap_Table_YYYYMMDD.xlsx': { name: '1.2. Cap Table.xlsx', type: 'file', icon: '📊' }}},
+            '02-financials': { name: '02. Financials', icon: '📁', content: { 'PCA-STRT-FM-YYYYMMDD.pdf': { name: 'Financial Model Outline.pdf', type: 'file', icon: '📄' },'PCA_Financial_Model.xlsx': { name: 'Financial Model.xlsx', type: 'file', icon: '📊' }}},
+            '03-market-strategy': { name: '03. Market & Strategy', icon: '📁', content: { 'PCA-STRT-BP-20250610.pdf': { name: 'Business Plan.pdf', type: 'file', icon: '📄' }, 'Competitive_Analysis.pdf': { name: 'Competitive Analysis.pdf', type: 'file', icon: '📄' }}},
+            '04-product-tech': { name: '04. Product & Technology', icon: '📁', content: { 'PCA_Subscription_Tiers.pdf': { name: 'Product Overview.pdf', type: 'file', icon: '📄' }, 'Sample_Reports': { name: '4.2. Sample Reports', type: 'folder', icon: '📁'}}},
+            '05-traction-performance': { name: '05. Traction & Performance', icon: '📁', content: { 'PCA_Performance_Dashboard.pdf': { name: 'Performance Dashboard.pdf', type: 'file', icon: '📄' }, 'Case_Studies': { name: '5.2. Case Studies', type: 'folder', icon: '📁'}}},
+            '06-team': { name: '06. Team', icon: '📁', content: { 'Founder_Bio_Sebastian.pdf': { name: 'Founder Bio.pdf', type: 'file', icon: '📄' }}},
+            '07-fundraising': { name: '07. Fundraising', icon: '📁', content: { 'PCA-FNRS-PD-20250610.pdf': { name: 'Pitch Deck.pdf', type: 'file', icon: '📄' }}},
         };
-
         const sidebar = document.getElementById('sidebar');
         const contentPane = document.getElementById('content-pane');
         const searchInput = document.getElementById('searchInput');
         let activeFolderId = '01-corporate-legal';
-        
         const showNotification = (message) => {
             const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notification-text');
-            notificationText.textContent = message;
+            notification.textContent = message;
             notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
+            setTimeout(() => { notification.classList.remove('show'); }, 2000);
         };
-
         const renderContent = (folderId) => {
             const folder = vdrData[folderId];
             if (!folder) return;
-            
             contentPane.innerHTML = '';
             const items = folder.content;
-            
             Object.keys(items).forEach(key => {
                 const item = items[key];
                 const itemEl = document.createElement('div');
-                itemEl.className = 'file-item text-center p-3 rounded-lg cursor-pointer';
-                itemEl.innerHTML = `
-                    <div class="text-5xl">${item.icon}</div>
-                    <p class="text-sm mt-2 break-words">${item.name}</p>
-                `;
-                if(item.type === 'file'){
-                    itemEl.addEventListener('click', () => showNotification(`Downloading ${item.name}...`));
-                } else {
-                    itemEl.addEventListener('click', () => showNotification(`Opening folder... (feature not implemented in this demo)`));
-                }
+                itemEl.className = 'file-item text-center p-3 rounded-lg cursor-pointer transition-colors hover:bg-bg-card';
+                itemEl.innerHTML = `<div class="text-5xl">${item.icon}</div><p class="text-sm mt-2 break-words text-text-muted">${item.name}</p>`;
+                itemEl.addEventListener('click', () => showNotification(`Downloading ${item.name}...`));
                 contentPane.appendChild(itemEl);
             });
         };
-
         const renderSidebar = () => {
             Object.keys(vdrData).forEach(key => {
                 const folder = vdrData[key];
                 const sidebarItem = document.createElement('button');
-                sidebarItem.className = 'sidebar-item w-full text-left px-4 py-2 rounded-md text-gray-700 hover:bg-gray-200 transition-colors';
+                sidebarItem.className = 'sidebar-item w-full text-left px-4 py-2 rounded-md text-text-muted hover:bg-bg-card transition-colors';
                 sidebarItem.dataset.folderId = key;
                 sidebarItem.innerHTML = `<span class="mr-2">${folder.icon}</span> ${folder.name}`;
-                if (key === activeFolderId) {
-                    sidebarItem.classList.add('active');
-                }
-
+                if (key === activeFolderId) sidebarItem.classList.add('active');
                 sidebarItem.addEventListener('click', () => {
                     activeFolderId = key;
                     document.querySelector('.sidebar-item.active').classList.remove('active');
                     sidebarItem.classList.add('active');
                     renderContent(key);
-                    searchInput.value = ''; // Clear search on folder change
+                    searchInput.value = '';
                 });
                 sidebar.appendChild(sidebarItem);
             });
         };
-        
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
             const items = contentPane.querySelectorAll('.file-item');
             items.forEach(item => {
                 const itemName = item.querySelector('p').textContent.toLowerCase();
-                if (itemName.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = itemName.includes(searchTerm) ? 'block' : 'none';
             });
         });
-
-        // Initial load
         renderSidebar();
         renderContent(activeFolderId);
     });
