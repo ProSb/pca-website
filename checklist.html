@@ -3,41 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive SPA: Legal & Structural Readiness Checklist</title>
-
-    <!-- Placeholder Comments -->
-    <!-- Chosen Palette: Corporate Blue & Neutrals -->
-    <!-- Application Structure Plan: An interactive checklist application. The structure uses collapsible accordion panels for each major category from the source document (Corporate, IP, etc.) to keep the UI clean. This is more useful than a static document because it allows users to track their progress. A master progress bar and per-section counters provide immediate visual feedback, turning a passive checklist into an active project management tool. -->
-    <!-- Visualization & Content Choices: 
-        - Checklist Categories: Goal(Organize) -> Accordion Panels (HTML/CSS/JS) -> Justification(Allows users to focus on one section at a time, preventing information overload).
-        - Checklist Items: Goal(Interact) -> Checkboxes with Labels -> Justification(The core interactive element for tracking task completion).
-        - Overall Progress: Goal(Inform) -> Dynamic Progress Bar & Text -> Justification(Provides high-level visual feedback and motivation).
-        - Section Progress: Goal(Inform) -> Dynamic Text Counters in Accordion Headers -> Justification(Offers granular progress tracking for each category).
-        - Critical Items: Goal(Alert) -> Highlighted list items -> Justification(Draws attention to the most important, non-negotiable tasks).
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <title>Readiness Checklist - Premium Crypto Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #F9FAFB;
-            --bg-card: #FFFFFF;
-            --text-primary: #111827;
-            --text-secondary: #4B5563;
-            --accent-primary: #2563EB;
-            --accent-primary-light: #EFF6FF;
-            --border-color: #E5E7EB;
-            --highlight-bg: #FEFCE8; /* Light yellow */
-            --highlight-border: #FACC15; /* Yellow */
+            --bg-dark: #241532;
+            --bg-card: #2c1b34;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8c52ff;
+            --accent-pink: #ff5170;
+            --accent-cyan: #5de0e6;
+            --highlight-bg: #4f46e520;
+            --highlight-border: var(--accent-purple);
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: var(--accent-cyan);
+        }
+        .nav-link.active-page {
+             color: var(--accent-cyan);
+             font-weight: 600;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+         .nav-link.active-page::after,
+        .nav-link:hover::after {
+            width: 100%;
         }
         .accordion-content {
             max-height: 0;
@@ -52,161 +67,185 @@
 </head>
 <body class="antialiased">
 
-    <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-        <!-- Header -->
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-gray-900">Legal & Structural Readiness</h1>
-            <p class="mt-2 text-lg text-text-secondary">An interactive checklist to track your progress towards investor readiness.</p>
-        </header>
-
-        <!-- Progress Tracker -->
-        <div class="mb-8 p-4 bg-card rounded-lg shadow-sm border border-border-color">
-            <div class="flex justify-between items-center mb-2">
-                <span class="font-semibold">Overall Progress</span>
-                <span id="progress-text" class="font-bold text-accent-primary">0%</span>
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/pca-website/" class="flex items-center space-x-2">
+                <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="progress-bar" class="bg-accent-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.3s ease-in-out;"></div>
+            <a href="/pca-website/#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+            <header class="mb-8 text-center">
+                <h1 class="font-heading text-4xl font-bold text-white">Legal & Structural Readiness</h1>
+                <p class="mt-2 text-lg text-text-muted">An interactive checklist to track your progress towards investor readiness.</p>
+            </header>
+
+            <div class="mb-8 p-4 bg-bg-card rounded-lg shadow-sm border border-white/10">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-semibold">Overall Progress</span>
+                    <span id="progress-text" class="font-bold text-accent-cyan">0%</span>
+                </div>
+                <div class="w-full bg-dark rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-accent-purple h-2.5 rounded-full" style="width: 0%; transition: width 0.3s ease-in-out;"></div>
+                </div>
+            </div>
+
+            <div id="checklist-container" class="space-y-4">
+                <div class="bg-bg-card rounded-lg shadow-sm border border-white/10">
+                    <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
+                        <span>1. Corporate Structure & Governance</span>
+                        <span class="flex items-center">
+                            <span class="status-text mr-3 text-sm font-medium text-text-muted">0/0 Completed</span>
+                            <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <ul class="p-5 border-t border-white/10 space-y-4 checklist-items">
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Choose & file for the appropriate legal entity (e.g., SRL, C-Corp).</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Draft and sign a comprehensive founders' agreement.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Create and maintain an accurate capitalization (Cap) table.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Formalize any board or advisory roles and agreements.</label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-bg-card rounded-lg shadow-sm border border-white/10">
+                    <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
+                        <span>2. Intellectual Property (IP) Protection</span>
+                        <span class="flex items-center">
+                            <span class="status-text mr-3 text-sm font-medium text-text-muted">0/0 Completed</span>
+                             <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                         <ul class="p-5 border-t border-white/10 space-y-4 checklist-items">
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Ensure all team members have signed IP assignment agreements (CIIAAs).</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Conduct a trademark search and file for protection.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Assert copyright on all original content and code.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Secure relevant domain names and social media handles.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Implement procedures to protect trade secrets.</label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-bg-card rounded-lg shadow-sm border border-white/10">
+                    <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
+                        <span>3. Compliance & Regulatory</span>
+                        <span class="flex items-center">
+                            <span class="status-text mr-3 text-sm font-medium text-text-muted">0/0 Completed</span>
+                            <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                         <ul class="p-5 border-t border-white/10 space-y-4 checklist-items">
+                            <li class="p-3 rounded-md critical-item"><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3"><b>CRITICAL:</b> Consult with a securities lawyer regarding investment advice regulations.</label></li>
+                            <li class="p-3 rounded-md critical-item"><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3"><b>CRITICAL:</b> Review and understand implications of MiCA regulations.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Confirm service does not fall under MiFID II scope.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Implement a GDPR-compliant privacy policy and data handling process.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Assess and implement necessary AML/KYC procedures.</label></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="bg-bg-card rounded-lg shadow-sm border border-white/10">
+                    <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
+                        <span>4. Fundraising Readiness</span>
+                         <span class="flex items-center">
+                            <span class="status-text mr-3 text-sm font-medium text-text-muted">0/0 Completed</span>
+                            <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                         <ul class="p-5 border-t border-white/10 space-y-4 checklist-items">
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Understand key terms of a standard venture term sheet.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Have legal counsel ready to review investor term sheets.</label></li>
+                            <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-500 text-accent-purple bg-dark focus:ring-accent-purple mr-3">Organize all documents in a secure virtual data room (VDR).</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <footer class="mt-8 text-center">
+                 <p class="text-sm text-text-muted">This checklist is for informational purposes only and does not constitute legal advice. <br>It is imperative to engage qualified legal and financial counsel.</p>
+            </footer>
+        </div>
+    </main>
+
+    <footer class="bg-black/50 py-16 border-t border-white/10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+             <div class="flex flex-col items-center">
+                 <p class="text-sm text-text-muted/70">Powered by</p>
+                <img src="https://i.imgur.com/8J5jJ3N.png" alt="SB Industries Logo" class="h-10 mt-2">
+                <p class="text-xs text-text-muted/50 mt-4">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
             </div>
         </div>
-
-        <!-- Accordion Sections -->
-        <div id="checklist-container" class="space-y-4">
-            <!-- Section 1: Corporate Structure -->
-            <div class="bg-card rounded-lg shadow-sm border border-border-color">
-                <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
-                    <span>1. Corporate Structure & Governance</span>
-                    <span class="flex items-center">
-                        <span class="status-text mr-3 text-sm font-medium text-text-secondary">0/0 Completed</span>
-                        <svg class="w-5 h-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-                    </span>
-                </button>
-                <div class="accordion-content">
-                    <ul class="p-5 border-t border-border-color space-y-4 checklist-items">
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Choose & file for the appropriate legal entity (e.g., SRL, C-Corp).</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Draft and sign a comprehensive founders' agreement.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Create and maintain an accurate capitalization (Cap) table.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Formalize any board or advisory roles and agreements.</label></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Section 2: IP Protection -->
-            <div class="bg-card rounded-lg shadow-sm border border-border-color">
-                <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
-                    <span>2. Intellectual Property (IP) Protection</span>
-                    <span class="flex items-center">
-                        <span class="status-text mr-3 text-sm font-medium text-text-secondary">0/0 Completed</span>
-                         <svg class="w-5 h-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-                    </span>
-                </button>
-                <div class="accordion-content">
-                     <ul class="p-5 border-t border-border-color space-y-4 checklist-items">
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Ensure all team members have signed IP assignment agreements (CIIAAs).</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Conduct a trademark search and file for protection.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Assert copyright on all original content and code.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Secure relevant domain names and social media handles.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Implement procedures to protect trade secrets.</label></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Section 3: Compliance & Regulatory -->
-            <div class="bg-card rounded-lg shadow-sm border border-border-color">
-                <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
-                    <span>3. Compliance & Regulatory</span>
-                    <span class="flex items-center">
-                        <span class="status-text mr-3 text-sm font-medium text-text-secondary">0/0 Completed</span>
-                        <svg class="w-5 h-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-                    </span>
-                </button>
-                <div class="accordion-content">
-                     <ul class="p-5 border-t border-border-color space-y-4 checklist-items">
-                        <li class="p-3 rounded-md critical-item"><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3"><b>CRITICAL:</b> Consult with a securities lawyer regarding investment advice regulations.</label></li>
-                        <li class="p-3 rounded-md critical-item"><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3"><b>CRITICAL:</b> Review and understand implications of MiCA regulations.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Confirm service does not fall under MiFID II scope.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Implement a GDPR-compliant privacy policy and data handling process.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Assess and implement necessary AML/KYC procedures.</label></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Section 4: Fundraising Readiness -->
-             <div class="bg-card rounded-lg shadow-sm border border-border-color">
-                <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left font-semibold">
-                    <span>4. Fundraising Readiness</span>
-                     <span class="flex items-center">
-                        <span class="status-text mr-3 text-sm font-medium text-text-secondary">0/0 Completed</span>
-                        <svg class="w-5 h-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-                    </span>
-                </button>
-                <div class="accordion-content">
-                     <ul class="p-5 border-t border-border-color space-y-4 checklist-items">
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Understand key terms of a standard venture term sheet.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Have legal counsel ready to review investor term sheets.</label></li>
-                        <li><label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary mr-3">Organize all documents in a secure virtual data room (VDR).</label></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <footer class="mt-8 text-center">
-             <p class="text-sm text-text-secondary">This checklist is for informational purposes only and does not constitute legal advice. <br>It is imperative to engage qualified legal and financial counsel.</p>
-        </footer>
-    </div>
-
+    </footer>
+    
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const container = document.getElementById('checklist-container');
-        const allCheckboxes = container.querySelectorAll('input[type="checkbox"]');
-        const progressBar = document.getElementById('progress-bar');
-        const progressText = document.getElementById('progress-text');
-
-        function updateProgress() {
-            // Overall progress
-            const checkedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
-            const totalCount = allCheckboxes.length;
-            const percentage = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
-            
-            progressBar.style.width = `${percentage}%`;
-            progressText.textContent = `${Math.round(percentage)}%`;
-
-            // Per-section progress
-            container.querySelectorAll('.bg-card').forEach(section => {
-                const sectionCheckboxes = section.querySelectorAll('.checklist-items input[type="checkbox"]');
-                const sectionTotal = sectionCheckboxes.length;
-                if (sectionTotal > 0) {
-                    const sectionChecked = Array.from(sectionCheckboxes).filter(cb => cb.checked).length;
-                    const statusText = section.querySelector('.status-text');
-                    statusText.textContent = `${sectionChecked}/${sectionTotal} Completed`;
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('header nav a');
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+                if (linkPath === currentPage) {
+                    link.classList.add('active-page');
                 }
             });
-        }
-        
-        container.addEventListener('click', (e) => {
-            // Accordion logic
-            const trigger = e.target.closest('.accordion-trigger');
-            if (trigger) {
-                const content = trigger.nextElementSibling;
-                const icon = trigger.querySelector('svg');
-                trigger.parentElement.classList.toggle('open');
-                icon.classList.toggle('rotate-180');
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-            }
-
-            // Checkbox logic
-            if (e.target.type === 'checkbox') {
-                updateProgress();
-            }
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('checklist-container');
+            const allCheckboxes = container.querySelectorAll('input[type="checkbox"]');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
 
-        // Initial call to set counts
-        updateProgress();
-    });
+            function updateProgress() {
+                const checkedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+                const totalCount = allCheckboxes.length;
+                const percentage = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${Math.round(percentage)}%`;
+
+                container.querySelectorAll('.bg-bg-card').forEach(section => {
+                    const sectionCheckboxes = section.querySelectorAll('.checklist-items input[type="checkbox"]');
+                    const sectionTotal = sectionCheckboxes.length;
+                    if (sectionTotal > 0) {
+                        const sectionChecked = Array.from(sectionCheckboxes).filter(cb => cb.checked).length;
+                        const statusText = section.querySelector('.status-text');
+                        statusText.textContent = `${sectionChecked}/${sectionTotal} Completed`;
+                    }
+                });
+            }
+            
+            container.addEventListener('click', (e) => {
+                const trigger = e.target.closest('.accordion-trigger');
+                if (trigger) {
+                    const content = trigger.nextElementSibling;
+                    const icon = trigger.querySelector('svg');
+                    trigger.parentElement.classList.toggle('open');
+                    icon.classList.toggle('rotate-180');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                }
+
+                if (e.target.type === 'checkbox') {
+                    updateProgress();
+                }
+            });
+
+            updateProgress();
+        });
     </script>
 </body>
 </html>
