@@ -3,394 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Financial Model: Premium Crypto Analysis</title>
-
-    <!-- Placeholder Comments -->
-    <!-- Chosen Palette: Zen Garden -->
-    <!-- Application Structure Plan: A two-column dashboard layout. The left column (1/3 width) contains all user inputs: interactive "Key Drivers" sliders and the static "Assumptions" table. This consolidates all controls. The right column (2/3 width) is a tabbed output area for "KPI Dashboard," "Projections," and "Use of Funds." This separation of input and output creates a clear, intuitive user flow for scenario analysis, which is an improvement over the previous single-column, top-nav design. -->
-    <!-- Visualization & Content Choices: 
-        - Key Drivers: Goal(Interact) -> Styled Sliders -> Justification(Provides tactile control over model assumptions).
-        - KPIs: Goal(Inform) -> Redesigned Dynamic Stat Cards with icons -> Justification(Gives instant, visually appealing feedback).
-        - Projections: Goal(Change over Time) -> Line & Bar Charts (Chart.js/Canvas) with a dynamic summary text block -> Justification(The dynamic text adds crucial context to the charts, directly reflecting the simulator's state).
-        - Use of Funds: Goal(Proportions) -> Donut Chart (Chart.js/Canvas) -> Justification(Best for showing allocation of funds).
-        - Assumptions List: Goal(Organize) -> HTML Table -> Justification(Provides transparency into the model's parameters, now grouped with other inputs).
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <title>Financial Simulator - Premium Crypto Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #F4F4F2; /* Light stone */
-            --bg-card: #FFFFFF;
-            --text-primary: #374151; /* Dark gray */
-            --text-secondary: #6B7280;
-            --accent-primary: #059669; /* Emerald green */
-            --accent-secondary: #3B82F6; /* Blue */
-            --border-color: #E5E7EB;
+            --bg-dark: #241532;
+            --bg-card: #2c1b34;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8c52ff;
+            --accent-pink: #ff5170;
+            --accent-cyan: #5de0e6;
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
         }
-        .chart-container {
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.2s;
             position: relative;
+        }
+        .nav-link:hover {
+            color: var(--accent-cyan);
+        }
+        .nav-link.active-page {
+             color: var(--accent-cyan);
+             font-weight: 600;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+         .nav-link.active-page::after,
+        .nav-link:hover::after {
             width: 100%;
-            height: 280px;
-            max-height: 280px;
         }
-        .nav-button {
-            transition: all 0.2s ease-in-out;
-            border-bottom: 3px solid transparent;
-            color: var(--text-secondary);
-        }
-        .nav-button.active {
-            color: var(--accent-primary);
-            font-weight: 700;
-            border-bottom-color: var(--accent-primary);
-        }
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .content-section.active {
-            display: block;
-        }
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 8px;
-            background: #D1D5DB;
-            border-radius: 5px;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
-        }
-        input[type="range"]:hover {
-            opacity: 1;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            background: var(--accent-primary);
-            cursor: pointer;
-            border-radius: 50%;
-            border: 4px solid var(--bg-card);
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            background: var(--accent-primary);
-            cursor: pointer;
-            border-radius: 50%;
-            border: 4px solid var(--bg-card);
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
+        /* Unique styles for this page */
+        .chart-container { position: relative; width: 100%; height: 280px; max-height: 280px; }
+        .nav-button { transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; color: var(--text-muted); }
+        .nav-button.active { color: var(--accent-purple); font-weight: 700; border-bottom-color: var(--accent-purple); }
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .content-section.active { display: block; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: #4a3b53; border-radius: 5px; outline: none; opacity: 0.7; transition: opacity .2s; }
+        input[type="range"]:hover { opacity: 1; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: var(--accent-purple); cursor: pointer; border-radius: 50%; border: 4px solid var(--bg-card); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; background: var(--accent-purple); cursor: pointer; border-radius: 50%; border: 4px solid var(--bg-card); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="max-w-screen-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <header class="mb-6">
-            <h1 class="text-4xl font-extrabold text-gray-800">PCA Financial Simulator</h1>
-            <p class="mt-1 text-lg text-text-secondary">Interactively explore projections by adjusting key business drivers.</p>
-        </header>
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/pca-website/" class="flex items-center space-x-2">
+                <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
+            </div>
+            <a href="/pca-website/#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
+        </nav>
+    </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Inputs -->
-            <aside class="lg:col-span-1 space-y-8">
-                <!-- Key Drivers -->
-                <div class="bg-card p-6 rounded-2xl shadow-sm border border-border-color">
-                    <h3 class="text-xl font-bold border-b border-border-color pb-3 mb-4">Key Drivers</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="adSpend" class="flex justify-between items-center text-md font-medium text-gray-800">
-                                <span>Monthly Ad Spend</span>
-                                <input type="text" id="adSpendValue" value="€1,500" class="w-24 text-right font-semibold bg-gray-100 px-2 py-1 rounded-md" readonly>
-                            </label>
-                            <input type="range" id="adSpend" min="500" max="10000" step="100" value="1500" class="mt-2">
-                        </div>
-                        <div>
-                            <label for="conversionRate" class="flex justify-between items-center text-md font-medium text-gray-800">
-                                <span>Conversion Rate</span>
-                                <span id="conversionRateValue" class="font-semibold bg-gray-100 px-2 py-1 rounded-md">2.0%</span>
-                            </label>
-                            <input type="range" id="conversionRate" min="0.5" max="10" step="0.1" value="2" class="mt-2">
-                        </div>
-                        <div>
-                            <label for="churnRate" class="flex justify-between items-center text-md font-medium text-gray-800">
-                                <span>Monthly Churn</span>
-                                <span id="churnRateValue" class="font-semibold bg-gray-100 px-2 py-1 rounded-md">3.0%</span>
-                            </label>
-                            <input type="range" id="churnRate" min="0.5" max="15" step="0.1" value="3" class="mt-2">
+    <main>
+       <div class="max-w-screen-2xl mx-auto p-4 sm:p-6 lg:p-8">
+            <header class="mb-6">
+                <h1 class="font-heading text-4xl font-extrabold text-white">PCA Financial Simulator</h1>
+                <p class="mt-1 text-lg text-text-muted">Interactively explore projections by adjusting key business drivers.</p>
+            </header>
+    
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <aside class="lg:col-span-1 space-y-8">
+                    <div class="bg-bg-card p-6 rounded-2xl shadow-sm border border-white/10">
+                        <h3 class="font-heading text-xl font-bold border-b border-white/10 pb-3 mb-4">Key Drivers</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="adSpend" class="flex justify-between items-center text-md font-medium text-text-light">
+                                    <span>Monthly Ad Spend</span>
+                                    <input type="text" id="adSpendValue" value="€1,500" class="w-24 text-right font-semibold bg-dark px-2 py-1 rounded-md" readonly>
+                                </label>
+                                <input type="range" id="adSpend" min="500" max="10000" step="100" value="1500" class="mt-2">
+                            </div>
+                            <div>
+                                <label for="conversionRate" class="flex justify-between items-center text-md font-medium text-text-light">
+                                    <span>Conversion Rate</span>
+                                    <span id="conversionRateValue" class="font-semibold bg-dark px-2 py-1 rounded-md">2.0%</span>
+                                </label>
+                                <input type="range" id="conversionRate" min="0.5" max="10" step="0.1" value="2" class="mt-2">
+                            </div>
+                            <div>
+                                <label for="churnRate" class="flex justify-between items-center text-md font-medium text-text-light">
+                                    <span>Monthly Churn</span>
+                                    <span id="churnRateValue" class="font-semibold bg-dark px-2 py-1 rounded-md">3.0%</span>
+                                </label>
+                                <input type="range" id="churnRate" min="0.5" max="15" step="0.1" value="3" class="mt-2">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Assumptions Table -->
-                <div class="bg-card p-6 rounded-2xl shadow-sm border border-border-color">
-                    <h3 class="text-xl font-bold border-b border-border-color pb-3 mb-4">Model Assumptions</h3>
-                    <div class="space-y-3 text-sm" id="assumptionsList"></div>
-                </div>
-            </aside>
-
-            <!-- Right Column: Outputs -->
-            <main class="lg:col-span-2">
-                <div class="bg-card p-2 sm:p-4 rounded-2xl shadow-sm border border-border-color">
-                    <nav class="flex space-x-2 sm:space-x-4 border-b border-border-color" id="main-nav">
-                        <button class="nav-button py-3 px-4 active" data-target="dashboard">Dashboard</button>
-                        <button class="nav-button py-3 px-4" data-target="projections">Projections</button>
-                        <button class="nav-button py-3 px-4" data-target="funding">Use of Funds</button>
-                    </nav>
-
-                    <div class="p-2 sm:p-6">
-                        <!-- Dashboard Section -->
-                        <section id="dashboard-content" class="content-section active">
-                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <div class="bg-emerald-50 p-6 rounded-xl">
-                                    <h4 class="font-semibold text-emerald-800">Year 3 ARR</h4>
-                                    <p id="kpi-arr-y3" class="text-4xl font-extrabold text-emerald-600 mt-2">€0</p>
-                                </div>
-                                <div class="bg-blue-50 p-6 rounded-xl">
-                                    <h4 class="font-semibold text-blue-800">Year 3 Subscribers</h4>
-                                    <p id="kpi-subs" class="text-4xl font-extrabold text-blue-600 mt-2">0</p>
-                                </div>
-                                 <div class="bg-gray-100 p-6 rounded-xl">
-                                    <h4 class="font-semibold text-gray-800">LTV : CAC Ratio</h4>
-                                    <p id="kpi-ltv-cac" class="text-4xl font-extrabold text-gray-600 mt-2">0.0x</p>
-                                </div>
-                                <div class="bg-gray-100 p-6 rounded-xl col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-3 gap-px bg-gray-200">
-                                   <div class="bg-card p-4 rounded-l-lg">
-                                       <h4 class="font-semibold text-gray-800 text-sm">Year 1 Net Income</h4>
-                                       <p id="kpi-net-income-y1" class="text-3xl font-bold text-gray-600 mt-1">€0</p>
-                                   </div>
-                                    <div class="bg-card p-4">
-                                       <h4 class="font-semibold text-gray-800 text-sm">Year 2 Net Income</h4>
-                                       <p id="kpi-net-income-y2" class="text-3xl font-bold text-gray-600 mt-1">€0</p>
-                                   </div>
-                                   <div class="bg-card p-4 rounded-r-lg">
-                                       <h4 class="font-semibold text-gray-800 text-sm">Year 3 Net Income</h4>
-                                       <p id="kpi-net-income-y3" class="text-3xl font-bold text-gray-600 mt-1">€0</p>
-                                   </div>
-                                </div>
-                            </div>
-                        </section>
-                        
-                        <!-- Projections Section -->
-                        <section id="projections-content" class="content-section">
-                            <div id="projections-summary" class="mb-6 p-4 bg-gray-50 rounded-lg text-text-secondary"></div>
-                            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                                <div>
-                                    <h3 class="text-lg font-semibold mb-2 text-center">Revenue Projections (by Tier)</h3>
-                                    <div class="chart-container"><canvas id="revenueChart"></canvas></div>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold mb-2 text-center">Subscriber Growth</h3>
-                                    <div class="chart-container"><canvas id="subscribersChart"></canvas></div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- Funding Section -->
-                        <section id="funding-content" class="content-section">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                <div class="text-text-secondary space-y-4">
-                                    <p>The <span class="font-bold text-text-primary">€250,000 seed investment</span> is strategically allocated to accelerate growth and product development over an 18-24 month runway.</p>
-                                    <ul class="space-y-3">
-                                        <li><span class="font-bold text-accent-primary">40% Product & Technology:</span> Enhancing the analytical platform and developing proprietary tools.</li>
-                                        <li><span class="font-bold text-accent-primary">35% Sales & Marketing:</span> Driving subscriber acquisition through our go-to-market strategy.</li>
-                                        <li><span class="font-bold text-accent-primary">15% Team Expansion:</span> Hiring key personnel to improve service quality.</li>
-                                        <li><span class="font-bold text-accent-primary">10% Operational Runway:</span> Capital for G&A expenses.</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                     <h3 class="text-lg font-semibold mb-2 text-center">Use of Funds (€250,000 Seed)</h3>
-                                    <div class="chart-container" style="max-width: 350px; margin: auto;"><canvas id="fundingChart"></canvas></div>
-                                </div>
-                            </div>
-                        </section>
+                    <div class="bg-bg-card p-6 rounded-2xl shadow-sm border border-white/10">
+                        <h3 class="font-heading text-xl font-bold border-b border-white/10 pb-3 mb-4">Model Assumptions</h3>
+                        <div class="space-y-3 text-sm" id="assumptionsList"></div>
                     </div>
-                </div>
-            </main>
+                </aside>
+    
+                <main class="lg:col-span-2">
+                    <div class="bg-bg-card p-2 sm:p-4 rounded-2xl shadow-sm border border-white/10">
+                        <nav class="flex space-x-2 sm:space-x-4 border-b border-white/10" id="main-nav-sim">
+                            <button class="nav-button py-3 px-4 active" data-target="dashboard">Dashboard</button>
+                            <button class="nav-button py-3 px-4" data-target="projections">Projections</button>
+                            <button class="nav-button py-3 px-4" data-target="funding">Use of Funds</button>
+                        </nav>
+    
+                        <div class="p-2 sm:p-6">
+                            <section id="dashboard-content" class="content-section active">
+                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div class="bg-accent-purple/10 p-6 rounded-xl">
+                                        <h4 class="font-semibold text-accent-purple">Year 3 ARR</h4>
+                                        <p id="kpi-arr-y3" class="text-4xl font-bold text-white mt-2">€0</p>
+                                    </div>
+                                    <div class="bg-accent-cyan/10 p-6 rounded-xl">
+                                        <h4 class="font-semibold text-accent-cyan">Year 3 Subscribers</h4>
+                                        <p id="kpi-subs" class="text-4xl font-bold text-white mt-2">0</p>
+                                    </div>
+                                     <div class="bg-white/5 p-6 rounded-xl">
+                                        <h4 class="font-semibold text-text-muted">LTV : CAC Ratio</h4>
+                                        <p id="kpi-ltv-cac" class="text-4xl font-bold text-white mt-2">0.0x</p>
+                                    </div>
+                                    <div class="bg-white/5 p-6 rounded-xl col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-3 gap-px bg-white/10">
+                                       <div class="bg-bg-card p-4 rounded-l-lg">
+                                           <h4 class="font-semibold text-text-muted text-sm">Year 1 Net Income</h4>
+                                           <p id="kpi-net-income-y1" class="text-3xl font-bold mt-1">€0</p>
+                                       </div>
+                                        <div class="bg-bg-card p-4">
+                                           <h4 class="font-semibold text-text-muted text-sm">Year 2 Net Income</h4>
+                                           <p id="kpi-net-income-y2" class="text-3xl font-bold mt-1">€0</p>
+                                       </div>
+                                       <div class="bg-bg-card p-4 rounded-r-lg">
+                                           <h4 class="font-semibold text-text-muted text-sm">Year 3 Net Income</h4>
+                                           <p id="kpi-net-income-y3" class="text-3xl font-bold mt-1">€0</p>
+                                       </div>
+                                    </div>
+                                </div>
+                            </section>
+                            
+                            <section id="projections-content" class="content-section">
+                                <div id="projections-summary" class="mb-6 p-4 bg-dark rounded-lg text-text-muted"></div>
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-2 text-center">Revenue Projections (by Tier)</h3>
+                                        <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-2 text-center">Subscriber Growth</h3>
+                                        <div class="chart-container"><canvas id="subscribersChart"></canvas></div>
+                                    </div>
+                                </div>
+                            </section>
+    
+                            <section id="funding-content" class="content-section">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                    <div class="text-text-muted space-y-4">
+                                        <p>The <span class="font-bold text-text-light">€250,000 seed investment</span> is strategically allocated to accelerate growth and product development over an 18-24 month runway.</p>
+                                        <ul class="space-y-3">
+                                            <li><span class="font-bold text-accent-purple">40% Product & Technology:</span> Enhancing the analytical platform and developing proprietary tools.</li>
+                                            <li><span class="font-bold text-accent-purple">35% Sales & Marketing:</span> Driving subscriber acquisition through our go-to-market strategy.</li>
+                                            <li><span class="font-bold text-accent-purple">15% Team Expansion:</span> Hiring key personnel to improve service quality.</li>
+                                            <li><span class="font-bold text-accent-purple">10% Operational Runway:</span> Capital for G&A expenses.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                         <h3 class="text-lg font-semibold mb-2 text-center">Use of Funds (€250,000 Seed)</h3>
+                                        <div class="chart-container" style="max-width: 350px; margin: auto;"><canvas id="fundingChart"></canvas></div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </main>
+            </div>
         </div>
-    </div>
+    </main>
 
+    <footer class="bg-black/50 py-16 border-t border-white/10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+             <div class="flex flex-col items-center">
+                 <p class="text-sm text-text-muted/70">Powered by</p>
+                <img src="https://i.imgur.com/8J5jJ3N.png" alt="SB Industries Logo" class="h-10 mt-2">
+                <p class="text-xs text-text-muted/50 mt-4">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const assumptions = {
-            adSpend: 1500, costPerClick: 1.5, conversionRate: 0.02, churnRate: 0.03,
-            tierPrices: { light: 249, premium: 497, ultra: 999 },
-            tierMix: { light: 0.6, premium: 0.3, ultra: 0.1 },
-            cogsPerSub: 25, founderSalary: 4000, otherGAndA: 500,
-        };
-
-        let charts = {};
-        const controls = {
-            adSpend: document.getElementById('adSpend'),
-            conversionRate: document.getElementById('conversionRate'),
-            churnRate: document.getElementById('churnRate'),
-            adSpendValue: document.getElementById('adSpendValue'),
-            conversionRateValue: document.getElementById('conversionRateValue'),
-            churnRateValue: document.getElementById('churnRateValue'),
-        };
-
-        const kpiElements = {
-            arrY3: document.getElementById('kpi-arr-y3'),
-            subs: document.getElementById('kpi-subs'),
-            ltvCac: document.getElementById('kpi-ltv-cac'),
-            netIncomeY1: document.getElementById('kpi-net-income-y1'),
-            netIncomeY2: document.getElementById('kpi-net-income-y2'),
-            netIncomeY3: document.getElementById('kpi-net-income-y3'),
-            projectionsSummary: document.getElementById('projections-summary'),
-        };
-
-        const formatCurrency = (value) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(value);
-
-        function calculateProjections() {
-            const monthlyData = [];
-            let totalSubs = 0;
-            const websiteVisitors = assumptions.adSpend / assumptions.costPerClick;
-            const newSubsPerMonth = websiteVisitors * assumptions.conversionRate;
-            for (let month = 1; month <= 36; month++) {
-                const churnedSubs = totalSubs * assumptions.churnRate;
-                totalSubs = (totalSubs - churnedSubs) + newSubsPerMonth;
-                const subsByTier = {
-                    light: totalSubs * assumptions.tierMix.light,
-                    premium: totalSubs * assumptions.tierMix.premium,
-                    ultra: totalSubs * assumptions.tierMix.ultra,
-                };
-                const monthlyRevenue = (subsByTier.light * assumptions.tierPrices.light) + (subsByTier.premium * assumptions.tierPrices.premium) + (subsByTier.ultra * assumptions.tierPrices.ultra);
-                const cogs = totalSubs * assumptions.cogsPerSub;
-                const opex = assumptions.founderSalary + assumptions.otherGAndA + assumptions.adSpend;
-                const netIncome = monthlyRevenue - cogs - opex;
-                monthlyData.push({ month, totalSubs, subsByTier, monthlyRevenue, netIncome });
-            }
-            return monthlyData;
-        }
-
-        function updateUI() {
-            assumptions.adSpend = parseFloat(controls.adSpend.value) || 0;
-            assumptions.conversionRate = parseFloat(controls.conversionRate.value) / 100;
-            assumptions.churnRate = parseFloat(controls.churnRate.value) / 100;
-
-            controls.adSpendValue.value = formatCurrency(assumptions.adSpend);
-            controls.conversionRateValue.textContent = `${(assumptions.conversionRate * 100).toFixed(1)}%`;
-            controls.churnRateValue.textContent = `${(assumptions.churnRate * 100).toFixed(1)}%`;
-
-            const projections = calculateProjections();
-            const year1 = projections[11];
-            const year2 = projections[23];
-            const year3 = projections[35];
-
-            const year1NetIncome = projections.slice(0, 12).reduce((acc, month) => acc + month.netIncome, 0);
-            const year2NetIncome = projections.slice(12, 24).reduce((acc, month) => acc + month.netIncome, 0);
-            const year3NetIncome = projections.slice(24, 36).reduce((acc, month) => acc + month.netIncome, 0);
-
-            kpiElements.subs.textContent = Math.round(year3.totalSubs).toLocaleString();
-            kpiElements.arrY3.textContent = formatCurrency(year3.monthlyRevenue * 12);
-            kpiElements.netIncomeY1.textContent = formatCurrency(year1NetIncome);
-            kpiElements.netIncomeY2.textContent = formatCurrency(year2NetIncome);
-            kpiElements.netIncomeY3.textContent = formatCurrency(year3NetIncome);
-
-            const avgMonthlyRevenuePerSub = (year3.totalSubs > 0) ? year3.monthlyRevenue / year3.totalSubs : 0;
-            const ltv = (assumptions.churnRate > 0 && avgMonthlyRevenuePerSub > 0) ? (avgMonthlyRevenuePerSub - assumptions.cogsPerSub) / assumptions.churnRate : 0;
-            const newSubsPerMonth = (assumptions.adSpend / assumptions.costPerClick) * assumptions.conversionRate;
-            const cac = (newSubsPerMonth > 0) ? assumptions.adSpend / newSubsPerMonth : 0;
-            const ltvCacRatio = (cac > 0) ? `${(ltv / cac).toFixed(1)}x` : 'N/A';
-            kpiElements.ltvCac.textContent = ltvCacRatio;
-            
-            [kpiElements.netIncomeY1, kpiElements.netIncomeY2, kpiElements.netIncomeY3].forEach((el, i) => {
-                const income = [year1NetIncome, year2NetIncome, year3NetIncome][i];
-                el.classList.toggle('text-red-600', income < 0);
-                el.classList.toggle('text-gray-600', income >= 0);
-            });
-
-
-            kpiElements.projectionsSummary.innerHTML = `Based on the selected drivers, the model projects reaching <b class="text-gray-700">${Math.round(year3.totalSubs).toLocaleString()} subscribers</b> and an ARR of <b class="text-gray-700">${formatCurrency(year3.monthlyRevenue * 12)}</b> by the end of Year 3. The business is projected to become profitable around month ${Math.max(1, projections.findIndex(p => p.netIncome > 0) + 1)}, assuming consistent growth.`;
-
-            if (charts.revenueChart) {
-                const quarterlyRevenue = { light: [], premium: [], ultra: [] };
-                for(let i=2; i < 36; i+=3) {
-                    quarterlyRevenue.light.push(projections[i].subsByTier.light * assumptions.tierPrices.light * 3);
-                    quarterlyRevenue.premium.push(projections[i].subsByTier.premium * assumptions.tierPrices.premium * 3);
-                    quarterlyRevenue.ultra.push(projections[i].subsByTier.ultra * assumptions.tierPrices.ultra * 3);
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('header nav a');
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+                if (linkPath === currentPage) {
+                    link.classList.add('active-page');
                 }
-                charts.revenueChart.data.datasets[0].data = quarterlyRevenue.light;
-                charts.revenueChart.data.datasets[1].data = quarterlyRevenue.premium;
-                charts.revenueChart.data.datasets[2].data = quarterlyRevenue.ultra;
-                charts.revenueChart.update('none');
-            }
-            if (charts.subscribersChart) {
-                charts.subscribersChart.data.datasets[0].data = projections.map(d => d.totalSubs);
-                charts.subscribersChart.update('none');
-            }
-        }
-        
-        function populateAssumptionsList() {
-            const listEl = document.getElementById('assumptionsList');
-            const data = [
-                { label: 'Cost Per Click (CPC)', value: formatCurrency(assumptions.costPerClick) },
-                { label: 'Subscriber Mix (L/P/U)', value: `${assumptions.tierMix.light*100}% / ${assumptions.tierMix.premium*100}% / ${assumptions.tierMix.ultra*100}%` },
-                { label: 'Light/Premium/Ultra Price', value: `${formatCurrency(assumptions.tierPrices.light)} / ${formatCurrency(assumptions.tierPrices.premium)} / ${formatCurrency(assumptions.tierPrices.ultra)}` },
-                { label: 'COGS per Subscriber', value: formatCurrency(assumptions.cogsPerSub) },
-                { label: 'Founder Salary (Monthly)', value: formatCurrency(assumptions.founderSalary) },
-                { label: 'Other G&A (Monthly)', value: formatCurrency(assumptions.otherGAndA) },
-            ];
-            listEl.innerHTML = data.map(row => `<div class="flex justify-between items-center"><span class="text-gray-600">${row.label}</span><span class="font-semibold text-gray-800">${row.value}</span></div>`).join('');
-        }
-
-        function initCharts() {
-            Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#6B7280';
-            const baseOptions = { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false } };
-            const quarterLabels = Array.from({length: 12}, (_, i) => `Q${(i%4)+1}'${25 + Math.floor(i/4)}`);
-
-            charts.revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
-                type: 'bar', data: { labels: quarterLabels, datasets: [
-                    { label: 'Light', data: [], backgroundColor: '#A7F3D0' }, { label: 'Premium', data: [], backgroundColor: '#34D399' }, { label: 'Ultra', data: [], backgroundColor: '#059669' }
-                ]}, options: { ...baseOptions, plugins: { legend: { position: 'bottom' } }, scales: { y: { stacked: true, beginAtZero: true, ticks: { callback: (v) => `${formatCurrency(v/1000)}k` } }, x: { stacked: true } } }
             });
-
-            charts.subscribersChart = new Chart(document.getElementById('subscribersChart').getContext('2d'), {
-                type: 'line', data: { labels: Array.from({length: 36}, (_, i) => `M${i+1}`), datasets: [{ label: 'Total Subscribers', data: [], borderColor: '#059669', backgroundColor: 'rgba(5, 150, 105, 0.1)', tension: 0.2, fill: true }] },
-                options: { ...baseOptions, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => v.toLocaleString() } } } }
-            });
-
-            charts.fundingChart = new Chart(document.getElementById('fundingChart').getContext('2d'), {
-                type: 'doughnut', data: { labels: ['Product & Tech', 'Sales & Marketing', 'Team', 'Operations'], datasets: [{ data: [40, 35, 15, 10], backgroundColor: ['#059669', '#34D399', '#6EE7B7', '#A7F3D0'], borderColor: '#FFFFFF', borderWidth: 4 }] },
-                options: { ...baseOptions, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-        
-        const nav = document.getElementById('main-nav');
-        const sections = document.querySelectorAll('.content-section');
-        nav.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                const targetId = e.target.dataset.target + '-content';
-                nav.querySelector('.active').classList.remove('active');
-                e.target.classList.add('active');
-                sections.forEach(s => s.classList.remove('active'));
-                document.getElementById(targetId).classList.add('active');
-            }
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const assumptions = {
+                adSpend: 1500, costPerClick: 1.5, conversionRate: 0.02, churnRate: 0.03,
+                tierPrices: { light: 249, premium: 497, ultra: 999 },
+                tierMix: { light: 0.6, premium: 0.3, ultra: 0.1 },
+                cogsPerSub: 25, founderSalary: 4000, otherGAndA: 500,
+            };
+    
+            let charts = {};
+            const controls = {
+                adSpend: document.getElementById('adSpend'),
+                conversionRate: document.getElementById('conversionRate'),
+                churnRate: document.getElementById('churnRate'),
+                adSpendValue: document.getElementById('adSpendValue'),
+                conversionRateValue: document.getElementById('conversionRateValue'),
+                churnRateValue: document.getElementById('churnRateValue'),
+            };
+    
+            const kpiElements = {
+                arrY3: document.getElementById('kpi-arr-y3'),
+                subs: document.getElementById('kpi-subs'),
+                ltvCac: document.getElementById('kpi-ltv-cac'),
+                netIncomeY1: document.getElementById('kpi-net-income-y1'),
+                netIncomeY2: document.getElementById('kpi-net-income-y2'),
+                netIncomeY3: document.getElementById('kpi-net-income-y3'),
+                projectionsSummary: document.getElementById('projections-summary'),
+            };
+    
+            const formatCurrency = (value) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(value);
+    
+            function calculateProjections() {
+                const monthlyData = [];
+                let totalSubs = 0;
+                const websiteVisitors = assumptions.adSpend / assumptions.costPerClick;
+                const newSubsPerMonth = websiteVisitors * assumptions.conversionRate;
+                for (let month = 1; month <= 36; month++) {
+                    const churnedSubs = totalSubs * assumptions.churnRate;
+                    totalSubs = (totalSubs - churnedSubs) + newSubsPerMonth;
+                    const subsByTier = {
+                        light: totalSubs * assumptions.tierMix.light,
+                        premium: totalSubs * assumptions.tierMix.premium,
+                        ultra: totalSubs * assumptions.tierMix.ultra,
+                    };
+                    const monthlyRevenue = (subsByTier.light * assumptions.tierPrices.light) + (subsByTier.premium * assumptions.tierPrices.premium) + (subsByTier.ultra * assumptions.tierPrices.ultra);
+                    const cogs = totalSubs * assumptions.cogsPerSub;
+                    const opex = assumptions.founderSalary + assumptions.otherGAndA + assumptions.adSpend;
+                    const netIncome = monthlyRevenue - cogs - opex;
+                    monthlyData.push({ month, totalSubs, subsByTier, monthlyRevenue, netIncome });
+                }
+                return monthlyData;
+            }
+    
+            function updateUI() {
+                assumptions.adSpend = parseFloat(controls.adSpend.value) || 0;
+                assumptions.conversionRate = parseFloat(controls.conversionRate.value) / 100;
+                assumptions.churnRate = parseFloat(controls.churnRate.value) / 100;
+    
+                controls.adSpendValue.value = formatCurrency(assumptions.adSpend);
+                controls.conversionRateValue.textContent = `${(assumptions.conversionRate * 100).toFixed(1)}%`;
+                controls.churnRateValue.textContent = `${(assumptions.churnRate * 100).toFixed(1)}%`;
+    
+                const projections = calculateProjections();
+                const year3 = projections[35];
+                
+                const year1NetIncome = projections.slice(0, 12).reduce((acc, month) => acc + month.netIncome, 0);
+                const year2NetIncome = projections.slice(12, 24).reduce((acc, month) => acc + month.netIncome, 0);
+                const year3NetIncome = projections.slice(24, 36).reduce((acc, month) => acc + month.netIncome, 0);
+    
+                kpiElements.subs.textContent = Math.round(year3.totalSubs).toLocaleString();
+                kpiElements.arrY3.textContent = formatCurrency(year3.monthlyRevenue * 12);
+                kpiElements.netIncomeY1.textContent = formatCurrency(year1NetIncome);
+                kpiElements.netIncomeY2.textContent = formatCurrency(year2NetIncome);
+                kpiElements.netIncomeY3.textContent = formatCurrency(year3NetIncome);
+    
+                [kpiElements.netIncomeY1, kpiElements.netIncomeY2, kpiElements.netIncomeY3].forEach((el, i) => {
+                    const income = [year1NetIncome, year2NetIncome, year3NetIncome][i];
+                    el.classList.toggle('text-red-400', income < 0);
+                    el.classList.toggle('text-white', income >= 0);
+                });
 
-        Object.values(controls).forEach(c => { if (c.tagName === 'INPUT') c.addEventListener('input', updateUI); });
-
-        initCharts();
-        populateAssumptionsList();
-        updateUI();
-    });
+                const newSubsPerMonth = (assumptions.adSpend / assumptions.costPerClick) * assumptions.conversionRate;
+                const cac = (newSubsPerMonth > 0) ? assumptions.adSpend / newSubsPerMonth : 0;
+                const avgMonthlyRevenuePerSub = (year3.totalSubs > 0) ? year3.monthlyRevenue / year3.totalSubs : 0;
+                const ltv = (assumptions.churnRate > 0 && avgMonthlyRevenuePerSub > 0) ? (avgMonthlyRevenuePerSub - assumptions.cogsPerSub) / assumptions.churnRate : 0;
+                kpiElements.ltvCac.textContent = (cac > 0) ? `${(ltv / cac).toFixed(1)}x` : 'N/A';
+    
+                kpiElements.projectionsSummary.innerHTML = `Based on the selected drivers, the model projects reaching <b class="text-white">${Math.round(year3.totalSubs).toLocaleString()} subscribers</b> and an ARR of <b class="text-white">${formatCurrency(year3.monthlyRevenue * 12)}</b> by the end of Year 3. The business is projected to become profitable around month ${Math.max(1, projections.findIndex(p => p.netIncome > 0) + 1)}, assuming consistent growth.`;
+    
+                if (charts.revenueChart) {
+                    const quarterlyRevenue = { light: [], premium: [], ultra: [] };
+                    for(let i=2; i < 36; i+=3) {
+                        quarterlyRevenue.light.push(projections[i].subsByTier.light * assumptions.tierPrices.light * 3);
+                        quarterlyRevenue.premium.push(projections[i].subsByTier.premium * assumptions.tierPrices.premium * 3);
+                        quarterlyRevenue.ultra.push(projections[i].subsByTier.ultra * assumptions.tierPrices.ultra * 3);
+                    }
+                    charts.revenueChart.data.datasets[0].data = quarterlyRevenue.light;
+                    charts.revenueChart.data.datasets[1].data = quarterlyRevenue.premium;
+                    charts.revenueChart.data.datasets[2].data = quarterlyRevenue.ultra;
+                    charts.revenueChart.update('none');
+                }
+                if (charts.subscribersChart) {
+                    charts.subscribersChart.data.datasets[0].data = projections.map(d => d.totalSubs);
+                    charts.subscribersChart.update('none');
+                }
+            }
+            
+            function populateAssumptionsList() {
+                const listEl = document.getElementById('assumptionsList');
+                const data = [
+                    { label: 'Cost Per Click (CPC)', value: formatCurrency(assumptions.costPerClick) },
+                    { label: 'Subscriber Mix (L/P/U)', value: `${assumptions.tierMix.light*100}% / ${assumptions.tierMix.premium*100}% / ${assumptions.tierMix.ultra*100}%` },
+                    { label: 'Light/Premium/Ultra Price', value: `${formatCurrency(assumptions.tierPrices.light)} / ${formatCurrency(assumptions.tierPrices.premium)} / ${formatCurrency(assumptions.tierPrices.ultra)}` },
+                    { label: 'COGS per Subscriber', value: formatCurrency(assumptions.cogsPerSub) },
+                    { label: 'Founder Salary (Monthly)', value: formatCurrency(assumptions.founderSalary) },
+                    { label: 'Other G&A (Monthly)', value: formatCurrency(assumptions.otherGAndA) },
+                ];
+                listEl.innerHTML = data.map(row => `<div class="flex justify-between items-center"><span class="text-text-muted">${row.label}</span><span class="font-semibold text-text-light">${row.value}</span></div>`).join('');
+            }
+    
+            function initCharts() {
+                Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#94a3b8';
+                const baseOptions = { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false } };
+                const quarterLabels = Array.from({length: 12}, (_, i) => `Q${(i%4)+1}'${25 + Math.floor(i/4)}`);
+    
+                charts.revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
+                    type: 'bar', data: { labels: quarterLabels, datasets: [
+                        { label: 'Light Tier', data: [], backgroundColor: '#a78bfa' }, { label: 'Premium Tier', data: [], backgroundColor: '#8b5cf6' }, { label: 'Ultra VIP Tier', data: [], backgroundColor: '#6d28d9' }
+                    ]}, options: { ...baseOptions, plugins: { legend: { position: 'bottom', labels: {color: '#94a3b8'} } }, scales: { y: { stacked: true, beginAtZero: true, ticks: { callback: (v) => `${formatCurrency(v/1000)}k` }, grid: {color: 'rgba(255,255,255,0.1)'} }, x: { stacked: true, grid: {display: false} } } }
+                });
+    
+                charts.subscribersChart = new Chart(document.getElementById('subscribersChart').getContext('2d'), {
+                    type: 'line', data: { labels: Array.from({length: 36}, (_, i) => `M${i+1}`), datasets: [{ label: 'Total Subscribers', data: [], borderColor: '#5de0e6', backgroundColor: 'rgba(93, 224, 230, 0.1)', tension: 0.2, fill: true }] },
+                    options: { ...baseOptions, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => v.toLocaleString() }, grid: {color: 'rgba(255,255,255,0.1)'} }, x: { grid: {display: false} } } }
+                });
+    
+                charts.fundingChart = new Chart(document.getElementById('fundingChart').getContext('2d'), {
+                    type: 'doughnut', data: { labels: ['Product & Tech (40%)', 'Sales & Marketing (35%)', 'Team Expansion (15%)', 'Operational Runway (10%)'], datasets: [{ data: [40, 35, 15, 10], backgroundColor: ['#8c52ff', '#a37cff', '#ba9eff', '#d1c1ff'], borderColor: '#2c1b34', borderWidth: 4 }] },
+                    options: { ...baseOptions, plugins: { legend: { position: 'bottom', labels: {color: '#94a3b8'} } } }
+                });
+            }
+            
+            const nav = document.getElementById('main-nav-sim');
+            const sections = document.querySelectorAll('.content-section');
+            nav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const targetId = e.target.dataset.target + '-content';
+                    nav.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+                }
+            });
+    
+            Object.values(controls).forEach(c => { if (c.tagName === 'INPUT') c.addEventListener('input', updateUI); });
+    
+            initCharts();
+            populateAssumptionsList();
+            updateUI();
+        });
     </script>
 </body>
 </html>
