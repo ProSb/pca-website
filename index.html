@@ -8,11 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Brand Colors (approximated from image) -->
-    <!-- Primary: ~#5D5FEF (Vibrant Blue/Purple) -->
-    <!-- Accent: ~#F3C96F (Gold/Yellow) -->
-    <!-- Background: ~#1A1A1A (Near Black) -->
-    <!-- Text: ~#F5F5F5 (Off-white) -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -38,6 +33,12 @@
         .btn-primary:hover {
             background-color: #4a4cc7;
         }
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #F3C96F;
+        }
         .feature-card {
             border: 1px solid rgba(245, 245, 245, 0.1);
             background-color: rgba(255, 255, 255, 0.05);
@@ -61,12 +62,14 @@
     <!-- Header & Nav -->
     <header class="sticky top-0 z-50 bg-[#1A1A1A]/80 backdrop-blur-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Premium Crypto Analysis</h1>
-            <div>
-                <a href="#features" class="text-gray-300 hover:text-white px-3 py-2">Features</a>
-                <a href="#pricing" class="text-gray-300 hover:text-white px-3 py-2">Pricing</a>
-                <a href="#contact" class="ml-4 btn-primary text-white font-semibold px-5 py-2 rounded-lg">Get Started</a>
+            <a href="/pca-website/" class="text-2xl font-bold">Premium Crypto Analysis</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="/pca-website/traction.html" class="nav-link text-gray-300">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-gray-300">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-gray-300">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-gray-300">Data Room</a>
             </div>
+            <a href="#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg">Get Started</a>
         </nav>
     </header>
 
@@ -206,3 +209,21 @@
 
 </body>
 </html>
+```
+
+### Why this works:
+
+The key change is in the `href` attributes of the links:
+
+* **From:** `href="#features"` (points to an element with `id="features"` on the *same page*)
+* **To:** `href="/pca-website/traction.html"` (points to a different file on your website)
+
+The path `/pca-website/traction.html` assumes that `pca-website` is the name of your repository on GitHub. This is the standard way GitHub Pages structures its URLs.
+
+### Next Steps:
+
+1.  **Replace your `index.html`** with the code above.
+2.  **Add the navigation bar to all other pages.** Copy the `<header>...</header>` section from the new `index.html` and paste it into `traction.html`, `simulator.html`, etc., replacing their existing headers. This will give you a consistent menu across your entire site.
+3.  **Commit and push the changes** to GitHub using either GitHub Desktop or the command line, just like you did the first time.
+
+After you push the changes, wait a minute or two for GitHub Pages to update. Then, when you visit your site, the navigation links will work correctly, allowing you to access all of your pag
