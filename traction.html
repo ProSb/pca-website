@@ -11,55 +11,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #241532;
-            --bg-card: #2c1b34;
-            --text-light: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent-purple: #8c52ff;
-            --accent-pink: #ff5170;
-            --accent-cyan: #5de0e6;
+            --bg-dark: #111827;
+            --bg-card: #1F2937;
+            --text-light: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --accent-lime: #A3E635;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-        }
-        .font-heading {
-            font-family: 'Poppins', sans-serif;
-        }
-        .nav-link {
-            transition: color 0.2s;
-            position: relative;
-        }
-        .nav-link:hover {
-            color: var(--accent-cyan);
-        }
-        .nav-link.active-page {
-             color: var(--accent-cyan);
-             font-weight: 600;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--accent-cyan);
-            transition: width 0.3s ease;
-        }
-         .nav-link.active-page::after,
-        .nav-link:hover::after {
-            width: 100%;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); }
+        .font-heading { font-family: 'Poppins', sans-serif; }
+        .nav-link { transition: color 0.2s; position: relative; }
+        .nav-link:hover { color: var(--accent-lime); }
+        .nav-link.active-page { color: var(--accent-lime); }
         .chart-container { position: relative; width: 100%; height: 250px; max-height: 250px; }
         .nav-button { transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; color: var(--text-muted); }
-        .nav-button.active { color: var(--accent-purple); font-weight: 700; border-bottom-color: var(--accent-purple); }
+        .nav-button.active { color: var(--accent-lime); font-weight: 700; border-bottom-color: var(--accent-lime); }
         .content-section { display: none; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .content-section.active { display: block; }
-        .sortable:hover { cursor: pointer; color: var(--accent-purple); }
+        .sortable:hover { cursor: pointer; color: var(--accent-lime); }
         .sortable .sort-icon { opacity: 0.3; transition: all 0.2s; }
         .sortable:hover .sort-icon { opacity: 1; }
         .tooltip { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-5px); background-color: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 10; }
@@ -68,18 +38,18 @@
 </head>
 <body class="antialiased">
 
-    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-border-color">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/pca-website/" class="flex items-center space-x-2">
                 <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
             </a>
-            <div class="hidden md:flex items-center space-x-8">
+            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold">
                 <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
                 <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
                 <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
                 <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
             </div>
-            <a href="/pca-website/#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
+            <a href="/pca-website/#contact" class="btn-primary px-5 py-2 rounded-lg shadow-lg shadow-lime-500/20 text-sm">Get Started</a>
         </nav>
     </header>
 
@@ -89,35 +59,35 @@
                 <h1 class="font-heading text-4xl font-extrabold text-white">Proof of Traction & Performance</h1>
                 <p class="mt-2 text-lg text-text-muted">An interactive dashboard showcasing the tangible results and market validation of Premium Crypto Analysis (PCA).</p>
             </header>
-            <div class="bg-bg-card rounded-xl shadow-md border border-white/10">
-                <nav class="flex space-x-2 sm:space-x-4 border-b border-white/10 px-6" id="main-nav">
+            <div class="bg-bg-card rounded-xl shadow-md border border-border-color">
+                <nav class="flex space-x-2 sm:space-x-4 border-b border-border-color px-6" id="main-nav">
                     <button class="nav-button py-4 px-2 sm:px-4 active" data-target="dashboard">Performance Dashboard</button>
                     <button class="nav-button py-4 px-2 sm:px-4" data-target="casestudies">Case Studies</button>
                     <button class="nav-button py-4 px-2 sm:px-4" data-target="validation">Qualitative Validation</button>
                 </nav>
                 <div class="p-6">
                     <section id="dashboard-content" class="content-section active">
-                        <p class="mb-6 text-text-muted">This dashboard presents the core quantitative results of our analytical methodology, drawn from a history of 160 recommendations. Note: Performance over 10,000% is excluded from KPI calculations for clarity.</p>
+                        <p class="mb-6 text-text-muted">This dashboard presents the core quantitative results of our analytical methodology, drawn from a history of over 160 recommendations. The metrics below demonstrate not just a plan, but a consistent history of generating significant alpha. Note: Performance over 10,000% is excluded from KPI calculations for clarity.</p>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div class="bg-accent-purple/10 p-6 rounded-lg border border-accent-purple/50">
+                            <div class="bg-lime-900/50 p-6 rounded-lg border border-lime-500/30">
                                 <h4 id="kpi-top-asset-name" class="font-semibold text-text-light">Highest Peak ROI</h4>
-                                <p id="kpi-top-roi" class="text-5xl font-bold text-accent-cyan mt-2">+0%</p>
+                                <p id="kpi-top-roi" class="text-5xl font-extrabold text-accent-lime mt-2">+0%</p>
                             </div>
-                            <div class="bg-white/5 p-6 rounded-lg">
+                            <div class="bg-gray-700/50 p-6 rounded-lg">
                                 <h4 id="kpi-runner-asset-name" class="font-semibold text-text-light">Runner-Up Peak ROI</h4>
-                                <p id="kpi-runner-roi" class="text-5xl font-bold text-white mt-2">+0%</p>
+                                <p id="kpi-runner-roi" class="text-5xl font-extrabold text-white mt-2">+0%</p>
                             </div>
-                            <div class="bg-white/5 p-6 rounded-lg">
+                            <div class="bg-gray-700/50 p-6 rounded-lg">
                                 <h4 class="font-semibold text-text-light">Target 1 Hit Rate</h4>
-                                <p id="kpi-hit-rate" class="text-5xl font-bold text-white mt-2">0%</p>
+                                <p id="kpi-hit-rate" class="text-5xl font-extrabold text-white mt-2">0%</p>
                                  <p class="text-sm text-text-muted mt-1">Across all recommendations</p>
                             </div>
                         </div>
                         <div>
-                             <input type="text" id="searchInput" placeholder="Search for an asset (e.g., WELT, STBU)..." class="w-full p-3 bg-dark border border-white/10 rounded-md placeholder-text-muted focus:ring-2 focus:ring-accent-purple focus:outline-none">
+                             <input type="text" id="searchInput" placeholder="Search for an asset (e.g., WELT, STBU)..." class="w-full p-3 bg-dark border border-border-color rounded-md placeholder-text-muted focus:ring-2 focus:ring-accent-lime focus:outline-none">
                              <div class="overflow-x-auto mt-4">
                                 <table class="w-full text-left">
-                                    <thead class="border-b-2 border-white/10">
+                                    <thead class="border-b-2 border-border-color">
                                         <tr>
                                             <th class="p-3 sortable" data-sort="asset">Asset <span class="sort-icon">↕️</span></th>
                                             <th class="p-3 sortable" data-sort="date">Date Recommended <span class="sort-icon">↕️</span></th>
@@ -126,35 +96,31 @@
                                             <th class="p-3">Document</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="performance-table-body">
-                                    </tbody>
+                                    <tbody id="performance-table-body" class="divide-y divide-border-color"></tbody>
                                 </table>
                             </div>
                         </div>
                     </section>
                     <section id="casestudies-content" class="content-section">
                          <p class="mb-6 text-text-muted">Explore the "why" behind our most successful calls. Each case study breaks down our thesis, the specific recommendation, and the ultimate result, demonstrating the power of our analytical framework.</p>
-                         <div id="case-studies-container" class="space-y-8">
-                         </div>
+                         <div id="case-studies-container" class="space-y-8"></div>
                     </section>
                     <section id="validation-content" class="content-section">
                         <p class="mb-6 text-text-muted">Quantitative results are critical, but qualitative validation from our community builds trust. Here's what our early subscribers have to say about the clarity, actionability, and impact of our service.</p>
-                        <div class="mb-6">
-                            <span class="mr-2">Filter by:</span>
-                            <button class="filter-btn bg-accent-purple/20 text-accent-cyan border border-accent-purple py-1 px-3 rounded-full" data-filter="all">All</button>
-                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Clarity">Clarity</button>
-                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Actionable">Actionable</button>
-                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Impact">Financial Impact</button>
+                        <div class="mb-6 flex space-x-2">
+                            <button class="filter-btn bg-accent-lime/20 text-accent-lime border border-accent-lime py-1 px-3 rounded-full text-sm" data-filter="all">All</button>
+                            <button class="filter-btn bg-gray-700 text-text-muted py-1 px-3 rounded-full text-sm" data-filter="Clarity">Clarity</button>
+                            <button class="filter-btn bg-gray-700 text-text-muted py-1 px-3 rounded-full text-sm" data-filter="Actionable">Actionable</button>
+                            <button class="filter-btn bg-gray-700 text-text-muted py-1 px-3 rounded-full text-sm" data-filter="Impact">Financial Impact</button>
                         </div>
-                        <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        </div>
+                        <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </section>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-black/50 py-16 border-t border-white/10 mt-16">
+    <footer class="bg-black/50 py-16 border-t border-border-color mt-16">
         <div class="container mx-auto px-6 text-center">
              <div class="flex flex-col items-center">
                  <p class="text-sm text-text-muted/70">Powered by</p>
@@ -179,7 +145,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const rawData = `NO,DATE OF REC,COIN,PRICE AT REC,T1,T2,T3,T4,T5,HIGHEST PRICE,T1 HIT,T2 HIT,T3 HIT,T4 HIT,T5 HIT,Peak Performance since Entry,% from ATH,% from T5,% from T4,% from T3,% from T2,% from T1,Comment
+            const rawData=`NO,DATE OF REC,COIN,PRICE AT REC,T1,T2,T3,T4,T5,HIGHEST PRICE,T1 HIT,T2 HIT,T3 HIT,T4 HIT,T5 HIT,Peak Performance since Entry,% from ATH,% from T5,% from T4,% from T3,% from T2,% from T1,Comment
 1,15.06.2022,Polytrade (TRADE) - Premium Crypto Analysis by Sb.Industries.pdf,0.058,0.25,0.74,2,3,4,1.95,YES,YES,NO,NO,NO,3262.07,-2.56,-35.00,-51.25,-2.50,163.51,680.00,
 2,26.09.2022,Stobox Token (STBU) - Premium Crypto Analysis by Sb.Industries.pdf,0.003394,0.0271,0.14,0.23,0.3,0.4,0.288,YES,YES,YES,NO,NO,8415.03,-28.00,-6.67,25.22,105.71,962.73,
 3,06.10.2022,(S2) Route (ROUTE).docx.pdf,3.15,6.5,12.5,21.5,35,55,58.3,YES,YES,YES,YES,YES,1750.79,6.00,66.57,171.16,211.11,796.92,
