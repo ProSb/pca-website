@@ -7,52 +7,68 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #241532;
+            --bg-card: #2c1b34;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8c52ff;
+            --accent-pink: #ff5170;
+            --accent-cyan: #5de0e6;
+            --accent-gold: #F3C96F; /* From PCA Logo */
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1A1A1A;
-            color: #F5F5F5;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
         }
         .hero-gradient {
-            background: radial-gradient(ellipse at top, rgba(93, 95, 239, 0.2), transparent 70%);
-        }
-        .text-accent {
-            color: #F3C96F;
-        }
-        .bg-accent {
-            background-color: #F3C96F;
-        }
-        .border-accent {
-            border-color: #F3C96F;
+            background: radial-gradient(ellipse at 50% -20%, rgba(140, 82, 255, 0.3), var(--bg-dark) 70%);
         }
         .btn-primary {
-            background-color: #5D5FEF;
+            background-color: var(--accent-purple);
             transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: #4a4cc7;
+            background-color: #7a48e6;
         }
         .nav-link {
             transition: color 0.2s;
+            position: relative;
         }
         .nav-link:hover {
-            color: #F3C96F;
+            color: var(--accent-cyan);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
         .feature-card {
             border: 1px solid rgba(245, 245, 245, 0.1);
-            background-color: rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            background-color: var(--bg-card);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .feature-card:hover {
             transform: translateY(-5px);
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .pricing-card {
-             border: 1px solid rgba(245, 245, 245, 0.1);
+            box-shadow: 0 10px 25px rgba(140, 82, 255, 0.15);
         }
         .pricing-card.popular {
-            border-color: #5D5FEF;
+            border-color: var(--accent-purple);
             transform: scale(1.05);
         }
     </style>
@@ -60,155 +76,145 @@
 <body class="antialiased">
 
     <!-- Header & Nav -->
-    <header class="sticky top-0 z-50 bg-[#1A1A1A]/80 backdrop-blur-sm">
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/pca-website/" class="text-2xl font-bold">Premium Crypto Analysis</a>
-            <div class="hidden md:flex items-center space-x-6">
-                <!-- Corrected Links -->
-                <a href="/pca-website/traction.html" class="nav-link text-gray-300">Traction</a>
-                <a href="/pca-website/simulator.html" class="nav-link text-gray-300">Simulator</a>
-                <a href="/pca-website/checklist.html" class="nav-link text-gray-300">Checklist</a>
-                <a href="/pca-website/dataroom.html" class="nav-link text-gray-300">Data Room</a>
+            <a href="/pca-website/" class="flex items-center space-x-2">
+                <!-- Replace with your logo URL -->
+                <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
             </div>
-            <a href="#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg">Get Started</a>
+            <a href="#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero-gradient py-20 md:py-32">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight">Stop Guessing. Start Winning.</h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">In a market dominated by noise, we provide the <span class="text-accent font-semibold">clear, actionable signal</span> you need to navigate crypto with confidence. Institutional-grade research, for the modern investor.</p>
+            <h1 class="font-heading text-5xl md:text-7xl font-bold leading-tight">Stop Guessing. Start Winning.</h1>
+            <p class="mt-4 text-lg md:text-xl text-text-muted max-w-3xl mx-auto">In a market dominated by noise, we provide the <span class="text-accent-cyan font-semibold">clear, actionable signal</span> you need to navigate crypto with confidence. Institutional-grade research, for the modern investor.</p>
             <div class="mt-8">
-                <a href="#pricing" class="btn-primary text-white font-bold px-8 py-4 rounded-lg text-lg">Unlock Your Edge</a>
+                <a href="#pricing" class="btn-primary text-white font-bold px-10 py-4 rounded-lg text-lg shadow-xl shadow-accent-purple/30">Unlock Your Edge</a>
             </div>
         </div>
     </section>
     
     <!-- Proven Results Section -->
-    <section class="py-16 bg-[#151515]">
+    <section class="py-16 bg-dark">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="text-sm uppercase font-bold text-gray-400 tracking-widest">A Track Record of Real Results</h3>
+            <h3 class="font-heading text-sm uppercase font-bold text-text-muted tracking-widest">A Track Record of Real Results</h3>
             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-[#1A1A1A] p-6 rounded-lg">
-                    <p class="text-5xl font-bold text-accent">+8,415%</p>
-                    <p class="mt-2 text-gray-300">Peak Return on Stobox (STBU)</p>
+                <div class="bg-bg-card p-6 rounded-lg border border-white/10">
+                    <p class="font-heading text-6xl font-bold text-accent-cyan">+8,415%</p>
+                    <p class="mt-2 text-text-muted">Peak Return on Stobox (STBU)</p>
                 </div>
-                <div class="bg-[#1A1A1A] p-6 rounded-lg">
-                    <p class="text-5xl font-bold text-accent">+3,260%</p>
-                    <p class="mt-2 text-gray-300">Peak Return on Polytrade (TRADE)</p>
+                <div class="bg-bg-card p-6 rounded-lg border border-white/10">
+                    <p class="font-heading text-6xl font-bold text-accent-pink">+5,150%</p>
+                    <p class="mt-2 text-text-muted">Peak Return on ATOR Protocol</p>
                 </div>
             </div>
-             <p class="mt-8 text-sm text-gray-500">*Past performance is not indicative of future results. Full case studies available to members.</p>
+             <p class="mt-8 text-sm text-text-muted/50">*Past performance is not indicative of future results. Full track record available on our Traction page.</p>
         </div>
     </section>
-
 
     <!-- Features Section -->
     <section id="features" class="py-20">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold">Everything You Need To Succeed</h2>
-                <p class="mt-3 text-gray-400 max-w-2xl mx-auto">We solve the biggest problems facing retail investors today.</p>
+                <h2 class="font-heading text-4xl md:text-5xl font-bold">Everything You Need To Succeed</h2>
+                <p class="mt-3 text-text-muted max-w-2xl mx-auto">We solve the biggest problems facing retail investors today.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="feature-card p-8 rounded-lg">
-                    <div class="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-                    </div>
-                    <h3 class="mt-6 text-xl font-bold">High-Signal Analysis</h3>
-                    <p class="mt-2 text-gray-400">Cut through the noise. We deliver deeply researched, concise reports on high-potential assets, so you can make informed decisions.</p>
+                <!-- Feature Cards -->
+                <div class="feature-card p-8 rounded-xl text-center">
+                    <div class="bg-accent-purple/10 inline-block p-4 rounded-xl"><span class="text-4xl">🔬</span></div>
+                    <h3 class="font-heading mt-6 text-2xl font-bold">High-Signal Analysis</h3>
+                    <p class="mt-2 text-text-muted">We deliver deeply researched, concise reports on high-potential assets, so you can make informed decisions, not emotional ones.</p>
                 </div>
-                <!-- Feature 2 -->
-                <div class="feature-card p-8 rounded-lg">
-                    <div class="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V7.618a1 1 0 01.553-.894L9 4m0 16v- механизма .85m0-10.298l5.447 2.724A1 1 0 0115 7.618v8.764a1 1 0 01-.553.894L9 20m-6 0h12"></path></svg>
-                    </div>
-                    <h3 class="mt-6 text-xl font-bold">Actionable Blueprints</h3>
-                    <p class="mt-2 text-gray-400">Go beyond theory. Get precise buy zones, profit targets, and risk management protocols for every recommendation we make.</p>
+                <div class="feature-card p-8 rounded-xl text-center">
+                    <div class="bg-accent-pink/10 inline-block p-4 rounded-xl"><span class="text-4xl">🎯</span></div>
+                    <h3 class="font-heading mt-6 text-2xl font-bold">Actionable Blueprints</h3>
+                    <p class="mt-2 text-text-muted">Go beyond theory. Get precise buy zones, profit targets, and risk management protocols for every recommendation we make.</p>
                 </div>
-                <!-- Feature 3 -->
-                <div class="feature-card p-8 rounded-lg">
-                    <div class="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </div>
-                    <h3 class="mt-6 text-xl font-bold">Real-Time Intelligence</h3>
-                    <p class="mt-2 text-gray-400">The market never sleeps, and neither do we. Receive critical updates and alerts on significant market movements as they happen.</p>
+                <div class="feature-card p-8 rounded-xl text-center">
+                    <div class="bg-accent-cyan/10 inline-block p-4 rounded-xl"><span class="text-4xl">⚡️</span></div>
+                    <h3 class="font-heading mt-6 text-2xl font-bold">Real-Time Intelligence</h3>
+                    <p class="mt-2 text-text-muted">The market never sleeps. Receive critical updates and alerts on significant market movements as they happen via our private channels.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="py-20 bg-[#151515]">
+    <section id="pricing" class="py-20 bg-bg-card/50">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold">Find the Perfect Plan</h2>
-                <p class="mt-3 text-gray-400 max-w-2xl mx-auto">Simple, transparent pricing for every type of investor.</p>
+                <h2 class="font-heading text-4xl md:text-5xl font-bold">Find the Perfect Plan</h2>
+                <p class="mt-3 text-text-muted max-w-2xl mx-auto">Simple, transparent pricing for every type of investor.</p>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto items-center">
-                <!-- Pricing Card 1: Light -->
-                <div class="pricing-card bg-[#1A1A1A] rounded-lg p-8 h-full flex flex-col">
-                    <h3 class="text-xl font-bold text-accent">Light</h3>
-                    <p class="mt-2 text-gray-400">The essential toolkit for market awareness.</p>
-                    <p class="mt-6 text-4xl font-bold">€249<span class="text-lg font-medium text-gray-400">/month</span></p>
-                    <ul class="mt-8 space-y-4 text-gray-300 flex-grow">
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Weekly Technical Analysis</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Key Trend & Breakout Reports</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Monthly Market Insights</li>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+                <!-- Pricing Cards -->
+                <div class="feature-card bg-bg-card p-8 h-full flex flex-col">
+                    <h3 class="font-heading text-2xl font-bold text-accent-cyan">Light</h3>
+                    <p class="mt-2 text-text-muted">Essential market awareness.</p>
+                    <p class="my-6 text-5xl font-bold font-heading">€249<span class="text-lg font-medium text-text-muted">/mo</span></p>
+                    <ul class="space-y-4 text-text-muted flex-grow">
+                        <li class="flex items-center"><span class="text-accent-cyan mr-3">✓</span>Weekly Analysis Reports</li>
+                        <li class="flex items-center"><span class="text-accent-cyan mr-3">✓</span>Key Trend Breakout Points</li>
+                        <li class="flex items-center"><span class="text-accent-cyan mr-3">✓</span>Monthly Market Insights</li>
                     </ul>
-                    <a href="#contact" class="mt-8 w-full text-center border border-accent text-accent font-semibold py-3 rounded-lg hover:bg-accent hover:text-[#1A1A1A] transition-colors">Choose Light</a>
+                    <a href="#contact" class="mt-8 w-full text-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 rounded-lg hover:bg-accent-cyan hover:text-bg-dark transition-colors">Choose Light</a>
                 </div>
-                <!-- Pricing Card 2: Premium (Popular) -->
-                <div class="pricing-card popular bg-[#1A1A1A] rounded-lg p-8 relative h-full flex flex-col">
-                    <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-accent text-[#1A1A1A] text-xs font-bold px-3 py-1 rounded-full uppercase">Most Popular</span>
-                    <h3 class="text-xl font-bold text-accent">Premium</h3>
-                    <p class="mt-2 text-gray-400">For the active trader seeking an edge.</p>
-                    <p class="mt-6 text-4xl font-bold">€497<span class="text-lg font-medium text-gray-400">/month</span></p>
-                    <ul class="mt-8 space-y-4 text-gray-300 flex-grow">
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>All Light Plan Features</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Mid-week Market Updates</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Real-time Market Alerts</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Actionable Entry/Exit Strategies</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Private Community Access</li>
+                <div class="pricing-card popular bg-bg-card p-8 relative h-full flex flex-col shadow-2xl shadow-accent-purple/20">
+                    <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-accent-purple text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Most Popular</span>
+                    <h3 class="font-heading text-2xl font-bold text-accent-purple">Premium</h3>
+                    <p class="mt-2 text-text-muted">For the active trader seeking an edge.</p>
+                    <p class="my-6 text-5xl font-bold font-heading">€497<span class="text-lg font-medium text-text-muted">/mo</span></p>
+                    <ul class="space-y-4 text-text-muted flex-grow">
+                        <li class="flex items-center"><span class="text-accent-purple mr-3">✓</span>All Light Plan Features</li>
+                        <li class="flex items-center"><span class="text-accent-purple mr-3">✓</span>Mid-week Market Updates</li>
+                        <li class="flex items-center"><span class="text-accent-purple mr-3">✓</span>Real-time Market Alerts</li>
+                        <li class="flex items-center"><span class="text-accent-purple mr-3">✓</span>Actionable Entry/Exit Strategies</li>
                     </ul>
                     <a href="#contact" class="mt-8 w-full text-center btn-primary text-white font-semibold py-3 rounded-lg">Choose Premium</a>
                 </div>
-                <!-- Pricing Card 3: Ultra VIP -->
-                <div class="pricing-card bg-[#1A1A1A] rounded-lg p-8 h-full flex flex-col">
-                    <h3 class="text-xl font-bold text-accent">Ultra VIP</h3>
-                    <p class="mt-2 text-gray-400">The ultimate professional solution.</p>
-                    <p class="mt-6 text-4xl font-bold">€999<span class="text-lg font-medium text-gray-400">/month</span></p>
-                    <ul class="mt-8 space-y-4 text-gray-300 flex-grow">
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>All Premium Plan Features</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Personalized Strategy Consultations</li>
-                        <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Advanced Risk & Position Sizing</li>
-                         <li class="flex items-center"><svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Access to SECRET Telegram Group</li>
+                <div class="feature-card bg-bg-card p-8 h-full flex flex-col">
+                    <h3 class="font-heading text-2xl font-bold text-accent-pink">Ultra VIP</h3>
+                    <p class="mt-2 text-text-muted">The ultimate professional solution.</p>
+                    <p class="my-6 text-5xl font-bold font-heading">€999<span class="text-lg font-medium text-text-muted">/mo</span></p>
+                    <ul class="space-y-4 text-text-muted flex-grow">
+                        <li class="flex items-center"><span class="text-accent-pink mr-3">✓</span>All Premium Plan Features</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-3">✓</span>Personalized Strategy Consultations</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-3">✓</span>Advanced Risk & Position Sizing</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-3">✓</span>Access to SECRET Telegram Group</li>
                     </ul>
-                    <a href="#contact" class="mt-8 w-full text-center border border-accent text-accent font-semibold py-3 rounded-lg hover:bg-accent hover:text-[#1A1A1A] transition-colors">Choose VIP</a>
+                    <a href="#contact" class="mt-8 w-full text-center border-2 border-accent-pink text-accent-pink font-semibold py-3 rounded-lg hover:bg-accent-pink hover:text-white transition-colors">Choose VIP</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-black py-16">
+    <footer id="contact" class="bg-black/50 py-16 border-t border-white/10">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold">Ready to Elevate Your Trading?</h2>
-            <p class="mt-3 text-gray-400 max-w-lg mx-auto">Contact us today to get started and receive your first analysis.</p>
+            <h2 class="font-heading text-3xl font-bold">Ready to Elevate Your Trading?</h2>
+            <p class="mt-3 text-text-muted max-w-lg mx-auto">Contact us today to get started and receive your first analysis.</p>
             <div class="mt-8 text-lg">
-                <p class="text-gray-300">Email: <a href="mailto:sebastian@sbindustries.net" class="text-accent hover:underline">sebastian@sbindustries.net</a></p>
-                <p class="mt-2 text-gray-300">Follow us on X: <a href="https://twitter.com/pcryptoanalysis" target="_blank" class="text-accent hover:underline">@pcryptoanalysis</a></p>
+                <p class="text-text-muted">Email: <a href="mailto:sebastian@sbindustries.net" class="text-accent-cyan hover:underline">sebastian@sbindustries.net</a></p>
+                <p class="mt-2 text-text-muted">Follow us on X: <a href="https://twitter.com/pcryptoanalysis" target="_blank" class="text-accent-cyan hover:underline">@pcryptoanalysis</a></p>
             </div>
-            <div class="mt-12 border-t border-gray-800 pt-8">
-                <p class="text-gray-500">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
-                 <p class="text-xs text-gray-600 mt-2">Disclaimer: All content is for informational purposes only and does not constitute financial advice. Please do your own research.</p>
+            <div class="mt-12 border-t border-white/10 pt-8 flex flex-col items-center">
+                 <p class="text-sm text-text-muted/70">Powered by</p>
+                <!-- Replace with your SB Industries logo URL -->
+                <img src="https://i.imgur.com/8J5jJ3N.png" alt="SB Industries Logo" class="h-10 mt-2">
+                <p class="text-xs text-text-muted/50 mt-4">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
 </body>
 </html>
-```
-
