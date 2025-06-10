@@ -3,180 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive SPA: PCA Proof of Traction Dashboard</title>
-
-    <!-- Placeholder Comments -->
-    <!-- Chosen Palette: Subtle Gold & Slate -->
-    <!-- Application Structure Plan: A tabbed dashboard interface. This structure is superior to a static document because it allows non-linear exploration. Users can immediately see high-level KPIs on the default "Dashboard" tab, dive into the narrative on the "Case Studies" tab, or review social proof on the "Qualitative" tab. This user-driven flow is more engaging for demonstrating traction. -->
-    <!-- Visualization & Content Choices: 
-        - Performance KPIs: Goal(Inform/Impress) -> Large Stat Cards & an Interactive HTML Table -> Justification(Cards provide instant "wow" factor, while the sortable/filterable table demonstrates depth and consistency).
-        - Case Studies: Goal(Explain) -> Two-column layout with a narrative and a Chart.js Canvas chart -> Justification(Separates the story from the visual result for easy digestion; the chart visualizes the success).
-        - Testimonials: Goal(Social Proof) -> Filterable cards -> Justification(Allows users to find testimonials relevant to their specific interests, like "Clarity" or "ROI").
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <title>Traction Dashboard - Premium Crypto Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #F8F9FA;
-            --bg-card: #FFFFFF;
-            --text-primary: #212529;
-            --text-secondary: #6C757D;
-            --accent-primary: #B5841D; /* Muted Gold */
-            --accent-primary-light: #FFF9E8;
-            --border-color: #DEE2E6;
+            --bg-dark: #241532;
+            --bg-card: #2c1b34;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8c52ff;
+            --accent-pink: #ff5170;
+            --accent-cyan: #5de0e6;
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
         }
-        .chart-container {
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.2s;
             position: relative;
-            width: 100%;
-            height: 250px;
-            max-height: 250px;
         }
-        .nav-button {
-            transition: all 0.2s ease-in-out;
-            border-bottom: 3px solid transparent;
-            color: var(--text-secondary);
+        .nav-link:hover {
+            color: var(--accent-cyan);
         }
-        .nav-button.active {
-            color: var(--accent-primary);
-            font-weight: 700;
-            border-bottom-color: var(--accent-primary);
+        .nav-link.active-page {
+             color: var(--accent-cyan);
+             font-weight: 600;
         }
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .content-section.active {
-            display: block;
-        }
-        .sortable:hover {
-            cursor: pointer;
-            color: var(--accent-primary);
-        }
-        .sortable .sort-icon {
-            opacity: 0.3;
-            transition: all 0.2s;
-        }
-        .sortable:hover .sort-icon {
-            opacity: 1;
-        }
-        .tooltip {
-            display: none;
+        .nav-link::after {
+            content: '';
             position: absolute;
-            background-color: #333;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 10;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-cyan);
+            transition: width 0.3s ease;
         }
-        .has-tooltip:hover .tooltip {
-            display: block;
+         .nav-link.active-page::after,
+        .nav-link:hover::after {
+            width: 100%;
         }
+        .chart-container { position: relative; width: 100%; height: 250px; max-height: 250px; }
+        .nav-button { transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; color: var(--text-muted); }
+        .nav-button.active { color: var(--accent-purple); font-weight: 700; border-bottom-color: var(--accent-purple); }
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .content-section.active { display: block; }
+        .sortable:hover { cursor: pointer; color: var(--accent-purple); }
+        .sortable .sort-icon { opacity: 0.3; transition: all 0.2s; }
+        .sortable:hover .sort-icon { opacity: 1; }
+        .tooltip { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-5px); background-color: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 10; }
+        .has-tooltip:hover .tooltip { display: block; }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <!-- Header -->
-        <header class="mb-6">
-            <h1 class="text-4xl font-extrabold text-gray-900">Proof of Traction & Performance</h1>
-            <p class="mt-2 text-lg text-text-secondary">An interactive dashboard showcasing the tangible results and market validation of Premium Crypto Analysis (PCA).</p>
-        </header>
+    <header class="sticky top-0 z-50 bg-dark/80 backdrop-blur-lg border-b border-white/10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/pca-website/" class="flex items-center space-x-2">
+                <img src="https://i.imgur.com/r6yTso5.png" alt="Premium Crypto Analysis Logo" class="h-10">
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/pca-website/traction.html" class="nav-link text-text-muted">Traction</a>
+                <a href="/pca-website/simulator.html" class="nav-link text-text-muted">Simulator</a>
+                <a href="/pca-website/checklist.html" class="nav-link text-text-muted">Checklist</a>
+                <a href="/pca-website/dataroom.html" class="nav-link text-text-muted">Data Room</a>
+            </div>
+            <a href="/pca-website/#contact" class="btn-primary text-white font-semibold px-5 py-2 rounded-lg shadow-lg shadow-accent-purple/30">Get Started</a>
+        </nav>
+    </header>
 
-        <!-- Main Content -->
-        <div class="bg-card rounded-xl shadow-md border border-border-color">
-            <!-- Navigation -->
-            <nav class="flex space-x-2 sm:space-x-4 border-b border-border-color px-6" id="main-nav">
-                <button class="nav-button py-4 px-2 sm:px-4 active" data-target="dashboard">Performance Dashboard</button>
-                <button class="nav-button py-4 px-2 sm:px-4" data-target="casestudies">Case Studies</button>
-                <button class="nav-button py-4 px-2 sm:px-4" data-target="validation">Qualitative Validation</button>
-            </nav>
-
-            <div class="p-6">
-                <!-- Dashboard Section -->
-                <section id="dashboard-content" class="content-section active">
-                    <p class="mb-6 text-text-secondary">This dashboard presents the core quantitative results of our analytical methodology, drawn from a history of 160 recommendations. The metrics below demonstrate not just a plan, but a consistent history of generating significant alpha. Note: Performance over 10,000% is excluded from KPI calculations for clarity.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-accent-primary-light p-6 rounded-lg border border-yellow-200">
-                            <h4 id="kpi-top-asset-name" class="font-semibold text-gray-700">Highest Peak ROI</h4>
-                            <p id="kpi-top-roi" class="text-5xl font-extrabold text-accent-primary mt-2">+0%</p>
+    <main>
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <header class="mb-6">
+                <h1 class="font-heading text-4xl font-extrabold text-white">Proof of Traction & Performance</h1>
+                <p class="mt-2 text-lg text-text-muted">An interactive dashboard showcasing the tangible results and market validation of Premium Crypto Analysis (PCA).</p>
+            </header>
+            <div class="bg-bg-card rounded-xl shadow-md border border-white/10">
+                <nav class="flex space-x-2 sm:space-x-4 border-b border-white/10 px-6" id="main-nav">
+                    <button class="nav-button py-4 px-2 sm:px-4 active" data-target="dashboard">Performance Dashboard</button>
+                    <button class="nav-button py-4 px-2 sm:px-4" data-target="casestudies">Case Studies</button>
+                    <button class="nav-button py-4 px-2 sm:px-4" data-target="validation">Qualitative Validation</button>
+                </nav>
+                <div class="p-6">
+                    <section id="dashboard-content" class="content-section active">
+                        <p class="mb-6 text-text-muted">This dashboard presents the core quantitative results of our analytical methodology, drawn from a history of 160 recommendations. Note: Performance over 10,000% is excluded from KPI calculations for clarity.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-accent-purple/10 p-6 rounded-lg border border-accent-purple/50">
+                                <h4 id="kpi-top-asset-name" class="font-semibold text-text-light">Highest Peak ROI</h4>
+                                <p id="kpi-top-roi" class="text-5xl font-bold text-accent-cyan mt-2">+0%</p>
+                            </div>
+                            <div class="bg-white/5 p-6 rounded-lg">
+                                <h4 id="kpi-runner-asset-name" class="font-semibold text-text-light">Runner-Up Peak ROI</h4>
+                                <p id="kpi-runner-roi" class="text-5xl font-bold text-white mt-2">+0%</p>
+                            </div>
+                            <div class="bg-white/5 p-6 rounded-lg">
+                                <h4 class="font-semibold text-text-light">Target 1 Hit Rate</h4>
+                                <p id="kpi-hit-rate" class="text-5xl font-bold text-white mt-2">0%</p>
+                                 <p class="text-sm text-text-muted mt-1">Across all recommendations</p>
+                            </div>
                         </div>
-                        <div class="bg-gray-100 p-6 rounded-lg">
-                            <h4 id="kpi-runner-asset-name" class="font-semibold text-gray-700">Runner-Up Peak ROI</h4>
-                            <p id="kpi-runner-roi" class="text-5xl font-extrabold text-gray-800 mt-2">+0%</p>
+                        <div>
+                             <input type="text" id="searchInput" placeholder="Search for an asset (e.g., WELT, STBU)..." class="w-full p-3 bg-dark border border-white/10 rounded-md placeholder-text-muted focus:ring-2 focus:ring-accent-purple focus:outline-none">
+                             <div class="overflow-x-auto mt-4">
+                                <table class="w-full text-left">
+                                    <thead class="border-b-2 border-white/10">
+                                        <tr>
+                                            <th class="p-3 sortable" data-sort="asset">Asset <span class="sort-icon">↕️</span></th>
+                                            <th class="p-3 sortable" data-sort="date">Date Recommended <span class="sort-icon">↕️</span></th>
+                                            <th class="p-3 sortable" data-sort="roi">Peak ROI <span class="sort-icon">↕️</span></th>
+                                            <th class="p-3">Status</th>
+                                            <th class="p-3">Document</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="performance-table-body">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="bg-gray-100 p-6 rounded-lg">
-                            <h4 class="font-semibold text-gray-700">Target 1 Hit Rate</h4>
-                            <p id="kpi-hit-rate" class="text-5xl font-extrabold text-gray-800 mt-2">0%</p>
-                             <p class="text-sm text-text-secondary mt-1">Across all recommendations</p>
+                    </section>
+                    <section id="casestudies-content" class="content-section">
+                         <p class="mb-6 text-text-muted">Explore the "why" behind our most successful calls. Each case study breaks down our thesis, the specific recommendation, and the ultimate result, demonstrating the power of our analytical framework.</p>
+                         <div id="case-studies-container" class="space-y-8">
+                         </div>
+                    </section>
+                    <section id="validation-content" class="content-section">
+                        <p class="mb-6 text-text-muted">Quantitative results are critical, but qualitative validation from our community builds trust. Here's what our early subscribers have to say about the clarity, actionability, and impact of our service.</p>
+                        <div class="mb-6">
+                            <span class="mr-2">Filter by:</span>
+                            <button class="filter-btn bg-accent-purple/20 text-accent-cyan border border-accent-purple py-1 px-3 rounded-full" data-filter="all">All</button>
+                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Clarity">Clarity</button>
+                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Actionable">Actionable</button>
+                            <button class="filter-btn bg-white/10 text-text-muted py-1 px-3 rounded-full" data-filter="Impact">Financial Impact</button>
                         </div>
-                    </div>
-                    <div>
-                         <input type="text" id="searchInput" placeholder="Search for an asset (e.g., WELT, STBU)..." class="w-full p-2 mb-4 border border-border-color rounded-md">
-                         <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="border-b-2 border-gray-200">
-                                    <tr>
-                                        <th class="p-3 sortable" data-sort="asset">Asset <span class="sort-icon">↕️</span></th>
-                                        <th class="p-3 sortable" data-sort="date">Date Recommended <span class="sort-icon">↕️</span></th>
-                                        <th class="p-3 sortable" data-sort="roi">Peak ROI <span class="sort-icon">↕️</span></th>
-                                        <th class="p-3">Status</th>
-                                        <th class="p-3">Document</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="performance-table-body">
-                                    <!-- Rows will be injected by JS -->
-                                </tbody>
-                            </table>
+                        <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         </div>
-                    </div>
-                </section>
-                
-                <!-- Case Studies Section -->
-                <section id="casestudies-content" class="content-section">
-                     <p class="mb-6 text-text-secondary">Explore the "why" behind our most successful calls. Each case study breaks down our thesis, the specific recommendation, and the ultimate result, demonstrating the power of our analytical framework.</p>
-                     <div id="case-studies-container" class="space-y-8">
-                        <!-- Case Studies will be injected by JS -->
-                     </div>
-                </section>
-
-                <!-- Validation Section -->
-                <section id="validation-content" class="content-section">
-                    <p class="mb-6 text-text-secondary">Quantitative results are critical, but qualitative validation from our community builds trust. Here's what our early subscribers have to say about the clarity, actionability, and impact of our service.</p>
-                    <div class="mb-6">
-                        <span class="mr-2">Filter by:</span>
-                        <button class="filter-btn bg-accent-primary-light text-accent-primary border border-accent-primary py-1 px-3 rounded-full" data-filter="all">All</button>
-                        <button class="filter-btn bg-gray-200 text-gray-700 py-1 px-3 rounded-full" data-filter="Clarity">Clarity</button>
-                        <button class="filter-btn bg-gray-200 text-gray-700 py-1 px-3 rounded-full" data-filter="Actionable">Actionable</button>
-                        <button class="filter-btn bg-gray-200 text-gray-700 py-1 px-3 rounded-full" data-filter="Impact">Financial Impact</button>
-                    </div>
-                    <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Testimonials injected by JS -->
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
+    <footer class="bg-black/50 py-16 border-t border-white/10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+             <div class="flex flex-col items-center">
+                 <p class="text-sm text-text-muted/70">Powered by</p>
+                <img src="https://i.imgur.com/8J5jJ3N.png" alt="SB Industries Logo" class="h-10 mt-2">
+                <p class="text-xs text-text-muted/50 mt-4">&copy; 2025 Premium Crypto Analysis by Sb.Industries SRL. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const rawData = `NO,DATE OF REC,COIN,PRICE AT REC,T1,T2,T3,T4,T5,HIGHEST PRICE,T1 HIT,T2 HIT,T3 HIT,T4 HIT,T5 HIT,Peak Performance since Entry,% from ATH,% from T5,% from T4,% from T3,% from T2,% from T1,Comment
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('header nav a');
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+                if (linkPath === currentPage) {
+                    link.classList.add('active-page');
+                }
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rawData = `NO,DATE OF REC,COIN,PRICE AT REC,T1,T2,T3,T4,T5,HIGHEST PRICE,T1 HIT,T2 HIT,T3 HIT,T4 HIT,T5 HIT,Peak Performance since Entry,% from ATH,% from T5,% from T4,% from T3,% from T2,% from T1,Comment
 1,15.06.2022,Polytrade (TRADE) - Premium Crypto Analysis by Sb.Industries.pdf,0.058,0.25,0.74,2,3,4,1.95,YES,YES,NO,NO,NO,3262.07,-2.56,-35.00,-51.25,-2.50,163.51,680.00,
 2,26.09.2022,Stobox Token (STBU) - Premium Crypto Analysis by Sb.Industries.pdf,0.003394,0.0271,0.14,0.23,0.3,0.4,0.288,YES,YES,YES,NO,NO,8415.03,-28.00,-6.67,25.22,105.71,962.73,
 3,06.10.2022,(S2) Route (ROUTE).docx.pdf,3.15,6.5,12.5,21.5,35,55,58.3,YES,YES,YES,YES,YES,1750.79,6.00,66.57,171.16,211.11,796.92,
@@ -213,202 +216,208 @@
 34,04.01.2023,Oraichain (ORAI) - Premium Crypto Analysis by Sb.Industries.pdf,1.76,10.85,58.9,95,150,200,17.4,YES,NO,NO,NO,NO,888.64,-91.30,-83.10,-81.68,-70.47,60.37,
 35,18.04.2023,Bounce Finance Governance Token (AUCTION) - Premium Crypto Analysis by Sb.Industries.pdf,5.94,14.62,27.4,43,60,80,42.8,YES,YES,NO,NO,NO,620.54,-0.47,-28.67,-0.47,56.20,192.75,`;
 
-        const testimonials = [
-            { text: "Finally, I can understand the market without the noise. The reports are incredibly clear and concise.", author: "Premium Subscriber, since Feb 2025", category: "Clarity" },
-            { text: "The clear entry and exit points gave me the confidence to actually make trades instead of just watching.", author: "Ultra VIP Subscriber, since Dec 2024", category: "Actionable" },
-            { text: "PCA helped me achieve my best quarter ever. The ROI on the STBU call alone paid for the subscription for life.", author: "Premium Subscriber, since Jan 2025", category: "Impact" },
-        ];
-        
-        const caseStudyData = {
-             'stbu': { title: 'Stobox Token (STBU)', thesis: 'Identified a deeply undervalued tokenization infrastructure project with strong fundamentals and technical indicators suggesting a bottoming formation before a significant market-wide recovery.', call: 'Recommended entry at ~$0.00339 with long-term targets up to $0.23.', takeaway: 'This success demonstrates our ability to identify high-conviction, asymmetric opportunities in micro-cap assets before they gain mainstream attention, leading to a peak return of +8,415%.', chartId: 'stbuChart' },
-            'trade': { title: 'Polytrade (TRADE)', thesis: 'Recognized a Real-World Asset (RWA) project with a solid protocol for trade finance tokenization, poised to capture value as the RWA narrative gained momentum.', call: 'Recommended entry around $0.058. First major target was $0.25, with a long-term potential of $2.00.', takeaway: 'Highlights our capacity for narrative-driven investment theses, capitalizing on emerging market trends while they are still in their infancy for a +3,262% peak return.', chartId: 'tradeChart' },
-            'trias': { title: 'Trias Token (TRIAS)', thesis: 'An all-platform-supported public chain system aiming to build trustworthy and reliable intelligent autonomous systems. The project showed strong technicals from a deep accumulation range.', call: 'Recommended a buy between $0.998 and $1.35, with a second target of $26.9.', takeaway: 'Demonstrates success in identifying complex infrastructure plays with long-term holding potential, resulting in a +1,833% peak performance.', chartId: 'triasChart' },
-            'lime': { title: 'iMe Lab (LIME)', thesis: 'A Telegram-based messenger with an integrated Crypto Wallet and DeFi tools, perfectly positioned to onboard Web2 users into Web3 seamlessly through a familiar interface.', call: 'Recommended entry around $0.0082, targeting the underserved market of social media-based crypto transactions.', takeaway: 'This call highlights our ability to spot projects with clear product-market fit and user acquisition channels, leading to a +485% peak return.', chartId: 'limeChart' },
-            'orai': { title: 'Oraichain (ORAI)', thesis: 'The world\'s first AI-powered oracle and ecosystem for blockchains, providing critical infrastructure for the burgeoning AI x Crypto narrative.', call: 'Recommended entry at $1.76, anticipating the massive growth in demand for AI services on-chain.', takeaway: 'Showcases our foresight in identifying sector-defining projects early. The position returned +888% at its peak, validating our thematic investment approach.', chartId: 'oraiChart' },
-            'auction': { title: 'Bounce Finance (AUCTION)', thesis: 'A decentralized auction protocol for token and NFT sales, providing a fundamental service for project launches and secondary market liquidity.', call: 'Recommended entry at $5.94, identifying its potential as a key "picks and shovels" play for the token launch market.', takeaway: 'Our analysis correctly identified a core infrastructure piece, leading to a +620% peak return as the platform saw increased adoption.', chartId: 'auctionChart' },
-        };
-        
-        const performanceData = rawData.split('\n').slice(1).map(row => {
-            const columns = row.split(',');
-            if (columns.length < 16) return null;
-            const coinRaw = columns[2] || '';
-            const coinMatch = coinRaw.match(/^(?:\(S\d+\)\s*)?([^(\r\n]+)/);
-            const assetName = coinMatch ? coinMatch[1].trim() : 'Unknown';
-            const docName = coinRaw.endsWith('.pdf') ? coinRaw : null;
-
-            return {
-                asset: assetName,
-                doc: docName,
-                date: columns[1],
-                roi: parseFloat(columns[15]) || 0,
-                status: columns[10] === 'YES' ? 'Target 1 Hit' : 'Pending',
-                price: parseFloat(columns[3]),
-                t1: parseFloat(columns[4]),
-                t2: parseFloat(columns[5]),
-                t3: parseFloat(columns[6]),
-                highest: parseFloat(columns[9]),
+            const testimonials = [
+                { text: "Finally, I can understand the market without the noise. The reports are incredibly clear and concise.", author: "Premium Subscriber, since Feb 2025", category: "Clarity" },
+                { text: "The clear entry and exit points gave me the confidence to actually make trades instead of just watching.", author: "Ultra VIP Subscriber, since Dec 2024", category: "Actionable" },
+                { text: "PCA helped me achieve my best quarter ever. The ROI on the STBU call alone paid for the subscription for life.", author: "Premium Subscriber, since Jan 2025", category: "Impact" }
+            ];
+            
+            const caseStudyData = {
+                 'stbu': { title: 'Stobox Token (STBU)', thesis: 'Identified a deeply undervalued tokenization infrastructure project with strong fundamentals and technical indicators suggesting a bottoming formation before a significant market-wide recovery.', call: 'Recommended entry at ~$0.00339 with long-term targets up to $0.23.', takeaway: 'This success demonstrates our ability to identify high-conviction, asymmetric opportunities in micro-cap assets before they gain mainstream attention, leading to a peak return of +8,415%.', chartId: 'stbuChart' },
+                'trade': { title: 'Polytrade (TRADE)', thesis: 'Recognized a Real-World Asset (RWA) project with a solid protocol for trade finance tokenization, poised to capture value as the RWA narrative gained momentum.', call: 'Recommended entry around $0.058. First major target was $0.25, with a long-term potential of $2.00.', takeaway: 'Highlights our capacity for narrative-driven investment theses, capitalizing on emerging market trends while they are still in their infancy for a +3,262% peak return.', chartId: 'tradeChart' },
+                'trias': { title: 'Trias Token (TRIAS)', thesis: 'An all-platform-supported public chain system aiming to build trustworthy and reliable intelligent autonomous systems. The project showed strong technicals from a deep accumulation range.', call: 'Recommended a buy between $0.998 and $1.35, with a second target of $26.9.', takeaway: 'Demonstrates success in identifying complex infrastructure plays with long-term holding potential, resulting in a +1,833% peak performance.', chartId: 'triasChart' },
+                'lime': { title: 'iMe Lab (LIME)', thesis: 'A Telegram-based messenger with an integrated Crypto Wallet and DeFi tools, perfectly positioned to onboard Web2 users into Web3 seamlessly through a familiar interface.', call: 'Recommended entry around $0.0082, targeting the underserved market of social media-based crypto transactions.', takeaway: 'This call highlights our ability to spot projects with clear product-market fit and user acquisition channels, leading to a +485% peak return.', chartId: 'limeChart' },
+                'orai': { title: 'Oraichain (ORAI)', thesis: 'The world\'s first AI-powered oracle and ecosystem for blockchains, providing critical infrastructure for the burgeoning AI x Crypto narrative.', call: 'Recommended entry at $1.76, anticipating the massive growth in demand for AI services on-chain.', takeaway: 'Showcases our foresight in identifying sector-defining projects early. The position returned +888% at its peak, validating our thematic investment approach.', chartId: 'oraiChart' },
+                'auction': { title: 'Bounce Finance (AUCTION)', thesis: 'A decentralized auction protocol for token and NFT sales, providing a fundamental service for project launches and secondary market liquidity.', call: 'Recommended entry at $5.94, identifying its potential as a key "picks and shovels" play for the token launch market.', takeaway: 'Our analysis correctly identified a core infrastructure piece, leading to a +620% peak return as the platform saw increased adoption.', chartId: 'auctionChart' },
             };
-        }).filter(item => item && item.asset);
-
-        const tableBody = document.getElementById('performance-table-body');
-        const searchInput = document.getElementById('searchInput');
-        let currentSort = { key: 'roi', direction: 'desc' };
-        
-        const renderTable = (data) => {
-            tableBody.innerHTML = data.map(item => `
-                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                    <td class="p-3 font-semibold">${item.asset}</td>
-                    <td class="p-3 text-text-secondary">${item.date}</td>
-                    <td class="p-3 font-semibold ${item.roi > 0 ? 'text-green-600' : 'text-red-600'}">${item.roi > 0 ? '+' : ''}${item.roi.toFixed(2)}%</td>
-                    <td class="p-3"><span class="px-2 py-1 text-xs rounded-full ${item.status.includes('Hit') ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${item.status}</span></td>
-                    <td class="p-3 text-sm text-blue-600 hover:underline relative has-tooltip">
-                        ${item.doc ? '📄' : ''}
-                        ${item.doc ? `<div class="tooltip">${item.doc}</div>` : ''}
-                    </td>
-                </tr>
-            `).join('');
-        };
-
-        const sortData = (key) => {
-            const direction = (currentSort.key === key && currentSort.direction === 'asc') ? 'desc' : 'asc';
-            currentSort = { key, direction };
-            const sortedData = [...performanceData].sort((a, b) => {
-                let valA = a[key]; let valB = b[key];
-                if(valA === null) return 1; if(valB === null) return -1;
-                if (key === 'date') { 
-                    const [d1, m1, y1] = a.date.split('.');
-                    const [d2, m2, y2] = b.date.split('.');
-                    valA = new Date(`${y1}-${m1}-${d1}`); 
-                    valB = new Date(`${y2}-${m2}-${d2}`); 
-                }
-                if (valA < valB) return direction === 'asc' ? -1 : 1;
-                if (valA > valB) return direction === 'asc' ? 1 : -1;
-                return 0;
-            });
-            renderTable(sortedData);
-        };
-        
-        const updateKPIs = () => {
-            const filteredData = performanceData.filter(d => d.roi <= 10000);
-            const sortedByROI = [...filteredData].sort((a, b) => b.roi - a.roi);
-            const [top, runner] = sortedByROI;
             
-            document.getElementById('kpi-top-asset-name').textContent = `Highest Peak ROI (${top.asset})`;
-            document.getElementById('kpi-top-roi').textContent = `+${top.roi.toFixed(0).toLocaleString()}%`;
+            const performanceData = rawData.split('\n').slice(1).map(row => {
+                const columns = row.split(',');
+                if (columns.length < 16) return null;
+                const coinRaw = columns[2] || '';
+                const coinMatch = coinRaw.match(/^(?:\(S\d+\)\s*)?([^(\r\n]+)/);
+                const assetName = coinMatch ? coinMatch[1].trim() : 'Unknown';
+                const docName = coinRaw.endsWith('.pdf') ? coinRaw : null;
+
+                return {
+                    asset: assetName,
+                    doc: docName,
+                    date: columns[1],
+                    roi: parseFloat(columns[15]) || 0,
+                    status: columns[10] === 'YES' ? 'Target 1 Hit' : 'Pending',
+                    price: parseFloat(columns[3]),
+                    t1: parseFloat(columns[4]),
+                    t2: parseFloat(columns[5]),
+                    t3: parseFloat(columns[6]),
+                    t4: parseFloat(columns[7]),
+                    t5: parseFloat(columns[8]),
+                    highest: parseFloat(columns[9]),
+                };
+            }).filter(item => item && item.asset);
+
+            const tableBody = document.getElementById('performance-table-body');
+            const searchInput = document.getElementById('searchInput');
+            let currentSort = { key: 'roi', direction: 'desc' };
             
-            document.getElementById('kpi-runner-asset-name').textContent = `Runner-Up Peak ROI (${runner.asset})`;
-            document.getElementById('kpi-runner-roi').textContent = `+${runner.roi.toFixed(0).toLocaleString()}%`;
+            const renderTable = (data) => {
+                tableBody.innerHTML = data.map(item => `
+                    <tr class="border-b border-white/10 hover:bg-white/5">
+                        <td class="p-3 font-semibold">${item.asset}</td>
+                        <td class="p-3 text-text-muted">${item.date}</td>
+                        <td class="p-3 font-semibold ${item.roi > 0 ? 'text-green-400' : 'text-red-400'}">${item.roi > 0 ? '+' : ''}${item.roi.toFixed(2)}%</td>
+                        <td class="p-3"><span class="px-2 py-1 text-xs rounded-full ${item.status.includes('Hit') ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}">${item.status}</span></td>
+                        <td class="p-3 text-sm text-accent-cyan hover:underline relative has-tooltip">
+                            ${item.doc ? '📄' : ''}
+                            ${item.doc ? `<div class="tooltip">${item.doc}</div>` : ''}
+                        </td>
+                    </tr>
+                `).join('');
+            };
 
-            const hitT1Count = performanceData.filter(item => item.status === 'Target 1 Hit').length;
-            const hitRate = (hitT1Count / performanceData.length) * 100;
-            document.getElementById('kpi-hit-rate').textContent = `${hitRate.toFixed(0)}%`;
-        };
-
-        document.querySelectorAll('.sortable').forEach(th => th.addEventListener('click', () => sortData(th.dataset.sort)));
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = performanceData.filter(item => item.asset.toLowerCase().includes(searchTerm));
-            renderTable(filteredData);
-        });
-        
-        const renderTestimonials = (filter = 'all') => {
-            const container = document.getElementById('testimonials-container');
-            const filtered = filter === 'all' ? testimonials : testimonials.filter(t => t.category === filter);
-            container.innerHTML = filtered.map(t => `
-                <div class="border border-border-color rounded-lg p-6 bg-white space-y-4">
-                    <p class="text-text-secondary">"${t.text}"</p>
-                    <div>
-                        <p class="font-semibold">${t.author}</p>
-                        <span class="text-xs font-semibold px-2 py-1 rounded-full bg-accent-primary-light text-accent-primary">${t.category}</span>
-                    </div>
-                </div>
-            `).join('');
-        };
-        
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.replace('bg-accent-primary-light', 'bg-gray-200');
-                    b.classList.replace('text-accent-primary', 'text-gray-700');
-                    b.classList.remove('border-accent-primary');
+            const sortData = (key) => {
+                const direction = (currentSort.key === key && currentSort.direction === 'asc') ? 'desc' : 'asc';
+                currentSort = { key, direction };
+                const sortedData = [...performanceData].sort((a, b) => {
+                    let valA = a[key]; let valB = b[key];
+                    if(valA === null) return 1; if(valB === null) return -1;
+                    if (key === 'date') { 
+                        const [d1, m1, y1] = a.date.split('.');
+                        const [d2, m2, y2] = b.date.split('.');
+                        valA = new Date(`${y1}-${m1}-${d1}`); 
+                        valB = new Date(`${y2}-${m2}-${d2}`); 
+                    }
+                    if (valA < valB) return direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return direction === 'asc' ? 1 : -1;
+                    return 0;
                 });
-                btn.classList.replace('bg-gray-200', 'bg-accent-primary-light');
-                btn.classList.replace('text-gray-700', 'text-accent-primary');
-                btn.classList.add('border-accent-primary');
-                renderTestimonials(btn.dataset.filter);
-            });
-        });
-
-        const nav = document.getElementById('main-nav');
-        const sections = document.querySelectorAll('.content-section');
-        nav.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                const targetId = e.target.dataset.target + '-content';
-                nav.querySelector('.active').classList.remove('active');
-                e.target.classList.add('active');
-                sections.forEach(s => s.classList.remove('active'));
-                document.getElementById(targetId).classList.add('active');
-            }
-        });
-
-        const createCaseStudyElement = (data) => {
-            const element = document.createElement('div');
-            element.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 border border-border-color rounded-lg';
-            element.innerHTML = `
-                <div class="space-y-4">
-                    <h3 class="text-2xl font-bold">${data.title}</h3>
-                    <div><h4 class="font-semibold">The Thesis:</h4><p class="text-text-secondary">${data.thesis}</p></div>
-                    <div><h4 class="font-semibold">The Call:</h4><p class="text-text-secondary">${data.call}</p></div>
-                    <div><h4 class="font-semibold">The Takeaway:</h4><p class="text-text-secondary">${data.takeaway}</p></div>
-                </div>
-                <div><div class="chart-container"><canvas id="${data.chartId}"></canvas></div></div>
-            `;
-            return element;
-        };
-
-        const initCharts = () => {
-            Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#6C757D';
-            const baseOptions = { responsive: true, maintainAspectRatio: false };
+                renderTable(sortedData);
+            };
             
-            const caseStudiesContainer = document.getElementById('case-studies-container');
-            const dataMap = {
-                stbu: performanceData.find(d => d.asset.includes('Stobox')),
-                trade: performanceData.find(d => d.asset.includes('Polytrade')),
-                trias: performanceData.find(d => d.asset.includes('Trias Token')),
-                lime: performanceData.find(d => d.asset.includes('iMe Lab')),
-                orai: performanceData.find(d => d.asset.includes('Oraichain')),
-                auction: performanceData.find(d => d.asset.includes('Bounce Finance')),
+            const updateKPIs = () => {
+                const filteredData = performanceData.filter(d => d.roi <= 10000);
+                if (filteredData.length < 2) return;
+                const sortedByROI = [...filteredData].sort((a, b) => b.roi - a.roi);
+                const [top, runner] = sortedByROI;
+                
+                document.getElementById('kpi-top-asset-name').textContent = `Highest Peak ROI (${top.asset})`;
+                document.getElementById('kpi-top-roi').textContent = `+${top.roi.toFixed(0).toLocaleString()}%`;
+                
+                document.getElementById('kpi-runner-asset-name').textContent = `Runner-Up Peak ROI (${runner.asset})`;
+                document.getElementById('kpi-runner-roi').textContent = `+${runner.roi.toFixed(0).toLocaleString()}%`;
+
+                const hitT1Count = performanceData.filter(item => item.status === 'Target 1 Hit').length;
+                const hitRate = (hitT1Count / performanceData.length) * 100;
+                document.getElementById('kpi-hit-rate').textContent = `${hitRate.toFixed(0)}%`;
             };
 
-            for (const key in caseStudyData) {
-                const study = caseStudyData[key];
-                const perf = dataMap[key];
-                if (study && perf) {
-                    caseStudiesContainer.appendChild(createCaseStudyElement(study));
-                    new Chart(document.getElementById(study.chartId).getContext('2d'), {
-                        type: 'line', 
-                        data: { 
-                            labels: ['Entry', 'T1', 'T2', 'T3', 'Peak'], 
-                            datasets: [{ 
-                                label: 'Price Action', 
-                                data: [perf.price, perf.t1, perf.t2, perf.t3, perf.highest], 
-                                borderColor: key === 'stbu' || key === 'orai' ? '#059669' : '#374151', 
-                                tension: 0.1, 
-                                fill: false 
-                            }] 
-                        },
-                        options: { ...baseOptions, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => `$${v.toFixed(3)}` } } } }
+            document.querySelectorAll('.sortable').forEach(th => th.addEventListener('click', () => sortData(th.dataset.sort)));
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredData = performanceData.filter(item => item.asset.toLowerCase().includes(searchTerm));
+                renderTable(filteredData);
+            });
+            
+            const renderTestimonials = (filter = 'all') => {
+                const container = document.getElementById('testimonials-container');
+                const filtered = filter === 'all' ? testimonials : testimonials.filter(t => t.category === filter);
+                container.innerHTML = filtered.map(t => `
+                    <div class="border border-white/10 rounded-lg p-6 bg-dark space-y-4">
+                        <p class="text-text-muted">"${t.text}"</p>
+                        <div>
+                            <p class="font-semibold">${t.author}</p>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-accent-purple/20 text-accent-cyan">${t.category}</span>
+                        </div>
+                    </div>
+                `).join('');
+            };
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.replace('bg-accent-purple/20', 'bg-white/10');
+                        b.classList.replace('text-accent-cyan', 'text-text-muted');
+                        b.classList.remove('border-accent-purple');
                     });
-                }
-            }
-        };
+                    btn.classList.replace('bg-white/10', 'bg-accent-purple/20');
+                    btn.classList.replace('text-text-muted', 'text-accent-cyan');
+                    btn.classList.add('border-accent-purple');
+                    renderTestimonials(btn.dataset.filter);
+                });
+            });
 
-        // Initial Renders
-        sortData('roi');
-        renderTestimonials();
-        updateKPIs();
-        initCharts();
-    });
+            const nav = document.getElementById('main-nav');
+            const sections = document.querySelectorAll('.content-section');
+            nav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const targetId = e.target.dataset.target + '-content';
+                    nav.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+                }
+            });
+
+            const createCaseStudyElement = (data) => {
+                const element = document.createElement('div');
+                element.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 border border-white/10 rounded-lg';
+                element.innerHTML = `
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-bold font-heading">${data.title}</h3>
+                        <div><h4 class="font-semibold">The Thesis:</h4><p class="text-text-muted">${data.thesis}</p></div>
+                        <div><h4 class="font-semibold">The Call:</h4><p class="text-text-muted">${data.call}</p></div>
+                        <div><h4 class="font-semibold">The Takeaway:</h4><p class="text-text-muted">${data.takeaway}</p></div>
+                    </div>
+                    <div><div class="chart-container"><canvas id="${data.chartId}"></canvas></div></div>
+                `;
+                return element;
+            };
+            
+            const initCharts = () => {
+                Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#94a3b8';
+                const baseOptions = { responsive: true, maintainAspectRatio: false };
+                
+                const caseStudiesContainer = document.getElementById('case-studies-container');
+                const dataMap = {
+                    stbu: performanceData.find(d => d.asset.includes('Stobox')),
+                    trade: performanceData.find(d => d.asset.includes('Polytrade')),
+                    trias: performanceData.find(d => d.asset.includes('Trias Token')),
+                    lime: performanceData.find(d => d.asset.includes('iMe Lab')),
+                    orai: performanceData.find(d => d.asset.includes('Oraichain')),
+                    auction: performanceData.find(d => d.asset.includes('Bounce Finance')),
+                };
+
+                for (const key in caseStudyData) {
+                    const study = caseStudyData[key];
+                    const perf = dataMap[key];
+                    if (study && perf) {
+                        caseStudiesContainer.appendChild(createCaseStudyElement(study));
+                        const chartDataPoints = [perf.price, perf.t1, perf.t2, perf.t3, perf.t4, perf.t5, perf.highest].filter(p => p != null && !isNaN(p));
+                        const chartLabels = ['Entry', 'T1', 'T2', 'T3', 'T4', 'T5', 'Peak'].slice(0, chartDataPoints.length);
+
+                        new Chart(document.getElementById(study.chartId).getContext('2d'), {
+                            type: 'line', 
+                            data: { 
+                                labels: chartLabels, 
+                                datasets: [{ 
+                                    label: 'Price Action', 
+                                    data: chartDataPoints,
+                                    borderColor: key === 'stbu' || key === 'orai' ? '#5de0e6' : '#ff5170', 
+                                    tension: 0.1, 
+                                    fill: false 
+                                }] 
+                            },
+                            options: { ...baseOptions, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => `$${v.toFixed(3)}`, color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.1)' } }, x: { ticks: { color: '#94a3b8'}, grid: { display: false } } } }
+                        });
+                    }
+                }
+            };
+
+            // Initial Renders
+            sortData('roi');
+            renderTestimonials();
+            updateKPIs();
+            initCharts();
+        });
     </script>
 </body>
 </html>
