@@ -64,6 +64,7 @@
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/pca-website/" class="text-2xl font-bold">Premium Crypto Analysis</a>
             <div class="hidden md:flex items-center space-x-6">
+                <!-- Corrected Links -->
                 <a href="/pca-website/traction.html" class="nav-link text-gray-300">Traction</a>
                 <a href="/pca-website/simulator.html" class="nav-link text-gray-300">Simulator</a>
                 <a href="/pca-website/checklist.html" class="nav-link text-gray-300">Checklist</a>
@@ -211,19 +212,12 @@
 </html>
 ```
 
-### Why this works:
+### Your Next Steps
 
-The key change is in the `href` attributes of the links:
+1.  **Update the `index.html` file:** Open your local `pca-website` folder. Delete the old `index.html` and save the new code I provided as `index.html`.
+2.  **(Optional but Recommended) Update other pages:** To make navigation seamless, copy the `<header>...</header>` section from the new `index.html` and paste it into the top of your other files (`traction.html`, `simulator.html`, etc.), replacing their current headers. This ensures the navigation bar is the same on every page.
+3.  **Push the changes to GitHub:** Use GitHub Desktop or the command line to "commit" and "push" your updated files.
+    * **Commit Message:** A good message would be `feat: Add sitewide navigation`.
+    * **Push:** Push the changes to the `main` branch.
 
-* **From:** `href="#features"` (points to an element with `id="features"` on the *same page*)
-* **To:** `href="/pca-website/traction.html"` (points to a different file on your website)
-
-The path `/pca-website/traction.html` assumes that `pca-website` is the name of your repository on GitHub. This is the standard way GitHub Pages structures its URLs.
-
-### Next Steps:
-
-1.  **Replace your `index.html`** with the code above.
-2.  **Add the navigation bar to all other pages.** Copy the `<header>...</header>` section from the new `index.html` and paste it into `traction.html`, `simulator.html`, etc., replacing their existing headers. This will give you a consistent menu across your entire site.
-3.  **Commit and push the changes** to GitHub using either GitHub Desktop or the command line, just like you did the first time.
-
-After you push the changes, wait a minute or two for GitHub Pages to update. Then, when you visit your site, the navigation links will work correctly, allowing you to access all of your pag
+After you push the update, GitHub Pages will automatically rebuild your site. Within a minute or two, your live URL will reflect the changes, and you will be able to click on the links in the header to navigate to all your different pag
